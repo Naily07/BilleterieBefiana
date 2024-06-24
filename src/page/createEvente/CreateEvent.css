@@ -1,0 +1,15 @@
+.stySelect:hover {
+  border-color: black !important;
+}
+
+.logo_image {
+  width: 40px;
+  height: 40px;
+  /*margin: auto*/
+  cursor: pointer;
+}
+
+.image_choix {
+  width: 100%;
+  height: 100%;
+}
