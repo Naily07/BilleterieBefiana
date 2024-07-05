@@ -61,7 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-function Headera() {
+export default function HeaderAccueil() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -78,7 +78,7 @@ function Headera() {
           <Typography sx={{ color: "#fff", fontWeight: "bold", bgcolor: "grey", padding: "10px 20px", fontSize: "12px", borderRadius: "5px" }}>Logo</Typography>
         <Box sx={{ display: "flex", width: "950px", justifyContent: "space-between" }}>
 
-        <Search sx={{ bgcolor: "#F8F7FA", borderRadius: "20px" }}>
+        <Search sx={{ bgcolor: "#F8F7FA", borderRadius: "20px"}}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
@@ -98,7 +98,7 @@ function Headera() {
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
             >
-              <Avatar sx={{ width: 35, height: 35, bgcolor: "#0F0F14" }}>NL</Avatar>
+              <Avatar sx={{ p : "20px", bgcolor: "#0F0F14" }}>NL</Avatar>
             </IconButton>
           </Tooltip>
         </Box>
@@ -169,4 +169,3 @@ function Headera() {
   )
 }
 
-export default Headera

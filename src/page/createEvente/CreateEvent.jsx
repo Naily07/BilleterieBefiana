@@ -9,8 +9,8 @@ import { MdOutlineDateRange } from "react-icons/md";
 import "./CreateEvent.css"
 import { FaRegImage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import Headera from "../header/Headera"
-import Headerb from "../header/Headerb"
+import HeaderAccueil from "../../components/header/HeaderAccueil";
+import Headerb from "../../components/header/Headerb"
 
 
 //import { makeStyles } from "@material-ui/core";
@@ -83,22 +83,22 @@ export default function CreateEvent() {
   return(
     <>
       <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex:1 }}>
-        <Headera />
+        <HeaderAccueil />
         <Headerb />
       </Box>
       <Box sx={{ mt: 18, padding: "15px 20px" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between"/*, bgcolor: "red"*/ }}>
-          <Typography sx={{ ml: 3, backgroundColor: "#fff", color: "blue.blue600", padding: "5px 1px", borderRadius: "2px", borderBottom: "1px solid #291E20" }}>CREE VOTRE EVENEMENT </Typography>
+          <Typography sx={{ ml: 3, backgroundColor: "#fff", color: "blue.blue600", padding: "5px 1px", borderRadius: "2px", fontWeight: "600", fontSize: "1.4rem", position: "relative", '::after': { content: "''", display: "block", bgcolor: "#291F43", height: "2px", width: "62px"  } }}>CREE VOTRE EVENEMENT </Typography>
           <Link to="/createbillet" style={{ textDecoration: "none" }}><Button sx={{ bgcolor: "#291F43", color: "#fff", "&:hover": { bgcolor: "#291E20"}, mr: 3, padding: "8px 20px" }}>Créer un billet</Button></Link>
         </Box>
 
         <form action="">
           <Box gap={1} sx={{ mt:2, /*backgroundColor: "grey.grey300",*/ width: "97%", marginX: "auto", paddingTop: "5px", display: "flex", justifyContent: "space-between", alignItems: 'stretch', pb: 1 }}>
-            <Box sx={{ width: "45%", backgroundColor: '#F8F7FA', borderRadius: "5px", /*boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.4)',*/ px: "20px", py: "20px"}}>
-              
+
+            <Box sx={{ width: "45%", backgroundColor: '#fff', borderRadius: "5px", boxShadow: '0px 0px 4px 1px rgba(0,0,0,0.2)', px: "20px", py: "20px"}}>         
                 <Box sx={{ display: "flex", alignItems: "center", gap: "6px", mb: 1 }}>
                     <PiNotePencilBold style={{ fontSize: "20px"}}/>
-                    <Typography sx={{ /*color: "blue.blue500",*/  fontSize: "17px", fontWeight: "400" }}>Nom de l évènement</Typography>
+                    <Typography sx={{ /*color: "blue.blue500",*/  fontSize: "17px", fontWeight: "500" }}>Nom de l évènement</Typography>
                 </Box>
                 <TextField size="small" variant="outlined" fullWidth
                   sx={{ 
@@ -110,9 +110,9 @@ export default function CreateEvent() {
                 />
                 <Box sx={{ display: "flex", alignItems: "center", mb:1, mt: 1.2, gap: "6px"}}>
                     <BsCalendarEvent style={{ marginTop: "5px", fontSize: "17px" }}/>
-                    <Typography sx={{ mt: 1, fontSize: "17px", fontWeight: "400"}}>Type de l évènement</Typography>
+                    <Typography sx={{ mt: 1, fontSize: "17px", fontWeight: "500"}}>Type de l évènement</Typography>
                 </Box>
-                <select className="stySelect" style={{ width: "100%", padding: "12.5px" ,borderColor: "lightgrey", borderRadius: "5px", marginBottom: "8px", fontWeight: "normal", fontSize: "16px", paddingLeft: "10px", backgroundColor: "#F8F7FA", border: "1px solid rgba(0,0,0,0.10)" }}>
+                <select className="stySelect" style={{ width: "100%", padding: "12.5px" ,borderColor: "lightgrey", borderRadius: "5px", marginBottom: "8px", fontWeight: "normal", fontSize: "14px", paddingLeft: "10px", backgroundColor: "#fff", border: "1px solid rgba(0,0,0,0.10)" }}>
                     <option>Festival</option>
                     <option>Salon & Foire</option>
                     <option>Concert & Spectacle</option>
@@ -120,13 +120,13 @@ export default function CreateEvent() {
                     <option>Sport & Session loisirs</option>
                     <option>Soirée & Evènement Etudiant</option>
                 </select>
-                <Box>
+                <Box sx={{ mt: 1 }}>
                   <Typography sx={{ fontWeight:"normal", cursor: "pointer" }} onClick={() => setIsShow(!isShow)}><span style={{ fontSize:"20px", marginTop: "10px" }}>+</span> Ajouter une autre information <span style={{ color: "grey" }}>(Optionel)</span></Typography>
 
                     {isShow && (
-                      <Box sx={{ width: "95%", backgroundColor: "grey", mx: "auto", mt: 1, pb: "0.02px", pt: 1 }}>
+                      <Box sx={{ width: "95%", backgroundColor: "#fff", mx: "auto", mt: 1, pb: "0.02px", pt: 1 }}>
                         <Box sx= {{ mb: 2 }}>
-                          <Typography sx={{ color: "#fff", fontWeight: "normal", ml: 1, mb: 2}}>Sponsor</Typography>
+                          <Typography sx={{ color: "blue", fontWeight: "normal", ml: 1, mb: 2}}>Sponsor</Typography>
                           <Box>
                             {choixImage.map((file, index) => (
                               <>
@@ -142,7 +142,7 @@ export default function CreateEvent() {
                             ))}
                             <Box sx={{ ml:1}}>
                               <input type="file" multiple onChange={selectImage} ref={inputRefLogo} style={{ display: "none" }} />
-                              <Typography sx={{ fontWeight: "normal", backgroundColor: "#fff", display: "inline-block", cursor: "pointer", color: "blue", pl: "10px", pr: "10px", pt: "5px", pb: "5px", borderRadius: "5px", ml: "2", mt: 1.5 }} htmlFor="uploadBtn" onClick={handleClickLogo}>
+                              <Typography sx={{ fontWeight: "normal", backgroundColor: "#291E20", display: "inline-block", cursor: "pointer", color: "#fff", pl: "10px", pr: "10px", pt: "5px", pb: "5px", borderRadius: "5px", ml: "2", mt: 1.5 }} htmlFor="uploadBtn" onClick={handleClickLogo}>
                               Importer une photo (logo)
                               </Typography>
                             </Box>
@@ -151,7 +151,7 @@ export default function CreateEvent() {
                       </Box>
                     )}
                 </Box>
-                <Box>
+                <Box sx={{ mt: 1 }}>
                   <Box sx={{ display: "flex" }}>
                     <Typography sx={{ mt:1, fontWeight:"normal" }}>Choisiser votre image</Typography>
                     <img
@@ -161,7 +161,7 @@ export default function CreateEvent() {
                     />
                   </Box>
                   { isShowChoix && (
-                    <Box sx={{ width: "95%", height: "200px", bgcolor: "grey", mx: "auto", mt: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Box sx={{ width: "95%", height: "200px", bgcolor: "#fff", mx: "auto", mt: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <Box onClick={handleImageClick}>
                         {image ? (
                           <Box sx={{ width: "150px", height: "150px", backgroundColor: "", borderRadius: "5px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -187,11 +187,11 @@ export default function CreateEvent() {
                   )}
                 </Box>
           </Box>
-          <Box sx={{ width: "55%", height: "277px", backgroundColor: '#F8F7FA', borderRadius: "5px", /*boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.2)',*/ px: "20px", py: "20px"}}>
+          <Box sx={{ width: "55%", height: "294px", backgroundColor: '#fff', borderRadius: "5px", boxShadow: '0px 0px 4px 1px rgba(0,0,0,0.2)', px: "20px", py: "20px"}}>
 
               <Box gap={0.5} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                   <MdOutlineLocationOn style={{ fontSize: "23px" }}/>
-                  <Typography sx={{ fontSize: "17px", fontWeight: "400"}}>Localisation</Typography>
+                  <Typography sx={{ fontSize: "17px", fontWeight: "500"}}>Localisation</Typography>
               </Box>
               <TextField size="small" variant="outlined" fullWidth 
                 sx={{ 
@@ -203,21 +203,22 @@ export default function CreateEvent() {
               />
               <Box gap={0.8} sx={{ display: "flex", alignItems: "center", mt: 1.8 }}>
                   <MdOutlineDateRange style={{ marginTop: "5px", fontSize: "20px" }}/>
-                  <Typography sx={{ mt: 1, fontSize: "17px", fontWeight: "400" }}>Date</Typography>
+                  <Typography sx={{ mt: 1, fontSize: "17px", fontWeight: "500" }}>Date</Typography>
               </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 0.7 }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1.6 }}>
                   <Box sx={{ backgroundColor: "F8F7FA", width: "33.33%" }}>
                     <Typography sx={{ fontWeight: "normal" }}>Date de début</Typography>
-                    <TextField size="small" type="date" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#F8F7FA",
+                    <TextField size="small" type="date" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#fff",
                     '& .MuiInputBase-input': {
                     color: 'grey.grey600',
                     fontWeight: "300",
+                    fontSize: "16px"
                     } 
                   }}/>
                   </Box>
                   <Box sx={{ backgroundColor: "F8F7FA", ml: 1 , width: "33.33%" }}>
                     <Typography sx={{ fontWeight: "normal" }}>Heure de début</Typography>
-                    <TextField size="small" type="time" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#F8F7FA",
+                    <TextField size="small" type="time" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#fff",
                     '& .MuiInputBase-input': {
                       color: 'grey.grey600',
                       fontWeight: "300",
@@ -226,7 +227,7 @@ export default function CreateEvent() {
                   </Box>
                   <Box sx={{ backgroundColor: "F8F7FA", ml: 1, width: "33.33%" }}>
                     <Typography sx={{ fontWeight: "normal" }}>Heure finale <span style={{ color: "grey" }}>(Optionel)</span></Typography>
-                    <TextField size="small" type="time" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#F8F7FA",
+                    <TextField size="small" type="time" fullWidth sx={{ fontWeight:"normal", mt: 0.5, bgcolor: "#fff",
                     '& .MuiInputBase-input': {
                       color: 'grey.grey600',
                       fontWeight: "300",

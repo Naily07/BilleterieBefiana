@@ -1,20 +1,24 @@
-import { Box } from "@mui/material"
-import CtnTypeEvenement from "../ctnTypeevenement/CtnTypeEvenement"
-import Headera from "../header/Headera"
-import Headerb from "../header/Headerb"
-import Footer from "../footer/Footer"
+import { Box, Stack } from "@mui/material";
+import HeaderAccueil from "../../components/header/HeaderAccueil";
+import Navbar from "../../components/header/Headerb";
+import Footer from "../../components/footer/Footer";
+import SliderAccuiel from "./component/slider";
+import ListEvent from "./component/listEvent";
 
 function Accueil() {
   return (
     <>
-      <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex:1 }}>
-        <Headera />
-        <Headerb />
+      <Box px={10}>
+        <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1 }}>
+          <HeaderAccueil />
+          <Navbar />
+        </Box>
+        <SliderAccuiel />
+        <ListEvent />
       </Box>
-      <CtnTypeEvenement />
       <Footer />
     </>
-  )
+  );
 }
 
-export default Accueil
+export default Accueil;

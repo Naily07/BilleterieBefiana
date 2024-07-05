@@ -88,28 +88,16 @@ function CtnTypeEvenement() {
                 <Typography sx={ styleTypeev }>Foire</Typography>
               </Box>
             </Box>
-            <Box sx={{ maxWidth: "300px", height: "200px" }}>
-              <Box sx={{ width: "100%", height: "100%", backgroundImage: `url(${saryC})`, backgroundSize: "cover", borderRadius: "10px", padding: "0px 0px 0px 20px" }}>
-                  <Typography sx={ styleTypeev }>Carnaval</Typography>
-              </Box>
-            </Box>
-            <Box sx={{ maxWidth: "300px", height: "200px" }}>
-              <Box sx={{ width: "100%", height: "100%", backgroundImage: `url(${saryB})`, backgroundSize: "cover", borderRadius: "10px", padding: "0px 0px 0px 20px" }}>
-                <Typography sx={ styleTypeev }>Soirée</Typography>
-              </Box>
-            </Box>
+            
           </Slider>
         </Box> 
 
-        <Box sx={{ width:"200px", height: "5px", bgcolor: "#291F43", mt: 5, mx: "auto", mb:1 }}></Box>          
 
-        <Box sx={{ padding: "10px 18px" }}>
-          <Typography sx={{ fontSize: "30px", textAlign: "center", mb: 1 }}>- Festival -</Typography>
-        </Box>
+        
 
-        <Box display={"flex"} sx={{ justifyContent: "space-around", padding: "0px 18px" }}>
+        {/* <Box display={"flex"} sx={{ justifyContent: "space-around", padding: "0px 18px" }}>
           {cardTypeEvenement()}
-        </Box>
+        </Box> */}
 
         <Box sx={{ height: "500px" }}></Box>
       </Box>

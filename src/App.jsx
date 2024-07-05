@@ -16,12 +16,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="signup" element={<CreateAcount />} />
         <Route path="/signup/organisateur" element={<Login />} />
         <Route path="/signup/user/account-type" element={<SignupUserAccountType />} />
         <Route path="/organisateur/point-de-vente" element={<PointDeVente />} />
-        <Route path="/point-de-vente/id" element={<PointDeVenteId />} />
-        <Route path="/single-event/event-name" element={<SingleEevent />} />
-        <Route path="/create-count" element={<CreateAcount />} />
+        <Route path="/point-de-vente/:id" element={<PointDeVenteId />} />
+        <Route path="/event/:slug" element={<SingleEevent />} />
         <Route path="/accueil" element={<Accueil />} />
         <Route path="/createevent" element={<CreateEvent />} />
         <Route path="/createbillet" element={<CreateBillet />} />
