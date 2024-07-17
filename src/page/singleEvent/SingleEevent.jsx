@@ -8,7 +8,9 @@ import { BsFillCalendarDateFill } from "react-icons/bs";
 import { MdAccessTimeFilled } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import FunctionListelogo from "./component/listLogo";
-import AddTicket from "./component/AddTicket";
+import VenteTicket from "../../components/tickets/InputVenteTicket";
+import InfoEvent from "./component/infoEvent";
+import Partenaire from "./component/partenariat";
 /*
 const typeTicket = [
   {
@@ -52,14 +54,16 @@ function SingleEevent() {
       {/* <Box sx={{ mt: 0.4, borderBottom: "2px solid gray" }}> */}
       <Stack
         direction="rows"
-        sx={{ padding: "40px 0px 0px 0px" }}
+        // sx={{ padding: "40px 0px 0px 0px" }}
         justifyContent="center"
+        alignItems={"center"}
         borderColor={"gray"}
-        borderRadius={"5px"}
+        // borderRadius={"5px"}
+        height={"92svh"}
       >
         <Box
           sx={{ width: "50%", display: "flex" }}
-          alignSelf={"self-start"}
+          // alignSelf={"self-start"}
           justifyContent={"center"}
           alignContent={"center"}
         >
@@ -69,7 +73,8 @@ function SingleEevent() {
             alt={params.slug}
             sx={{
               width: "50%",
-              mx: "auto",
+              height:"auto"
+              // mx: "auto",
             }}
           ></Box>
         </Box>
@@ -82,69 +87,15 @@ function SingleEevent() {
             justifyContent: "center",
           }}
         >
-          <Box sx={{ width: "50%" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography
-                sx={{
-                  fontSize: "20px",
-                  color: "#291F43",
-                  "&.MuiTypography-root::after": {
-                    content: "''",
-                    display: "block",
-                    width: "100%",
-                    height: "2px",
-                    backgroundColor: "gray",
-                  },
-                }}
-              >
-                Préstige :
-              </Typography>
-              <Typography
-                sx={{ textTransform: "uppercase", ml: 1, fontWeight: "600" }}
-              >
-                Soirée
-              </Typography>
-            </Box>
-            <Stack sx={{ mt: 2 }} gap={3}>
-              <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
-                <FaLocationDot />
-                <Typography>Ivandry</Typography>
-              </Box>
-              <Box
-                mt={1}
-                gap={1}
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <BsFillCalendarDateFill />
-                <Typography>20 Jiun</Typography>
-              </Box>
-              <Box mt={1} sx={{ display: "flex", alignItems: "center" }}>
-                <MdAccessTimeFilled size={20} />
-                <Typography ml={0.5}>Heurre de début: 20h </Typography>
-                <Typography>Jusqu à: 23h </Typography>
-              </Box>
-            </Stack>
-          </Box>
-          <Box sx={{ width: "50%" }}>
-            <Typography sx={{ fontSize: "20px", color: "#291F43" }}>
-              Partenaires
-            </Typography>
-            <Box sx={{ width: "85px", height: "5px", bgcolor: "gray" }}></Box>
-            <Stack
-              gap={2}
-              direction="row"
-              flexWrap={"wrap"}
-              alignItems={"center"}
-              marginTop={2}
-            >
-              <FunctionListelogo />
-            </Stack>
-          </Box>
+          <InfoEvent />
+          <Partenaire />
+          
           <Stack
             direction="row"
             flexWrap={"wrap"}
             width={"100%"}
-            mt={2}
+            
+            mt={5}
             sx={{
               // padding: "15px 70px",
               "&.MuiStack-root::before": {
@@ -152,6 +103,7 @@ function SingleEevent() {
                 display: "block",
                 height: "1px",
                 width: "90%",
+                mb : 5,
                 backgroundColor: "black",
               },
             }}
@@ -184,7 +136,7 @@ function SingleEevent() {
                 </Box>
               </Box>
               {listTicket.map((v, i) => (
-                <AddTicket
+                <VenteTicket
                   setTotalPrice={setTotalPrice}
                   key={i}
                   price={v.price}
@@ -192,7 +144,7 @@ function SingleEevent() {
                 />
               ))}
             </Box>
-            <Stack sx={{ width: "45%" }} >
+            <Stack sx={{ width: "45%" }}>
               {/* <Box border={"1px solid"} borderColor={"gray"} borderRadius={"5px"} > */}
               <Typography
                 sx={{

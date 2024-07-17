@@ -10,6 +10,7 @@ import SingleEevent from "./page/singleEvent/SingleEevent"
 import CreateAcount from "./page/createCount/CreateAcount"
 import AccueilUser from "./page/accueiluser/AccueilUser"
 import Ticket from "./page/ticket/Ticket"
+import GestionBillet from "./page/gestionBillet/GestionBillet"
 
 function App() {
 
@@ -18,13 +19,14 @@ function App() {
       <Routes>
         <Route path="signup" element={<CreateAcount />} />
         <Route path="/signup/organisateur" element={<Login />} />
-        <Route path="/signup/user/account-type" element={<SignupUserAccountType />} />
+        <Route path="/signup/account-type" element={<SignupUserAccountType />} />
+        <Route path="/accueil" element={<Accueil />} />
         <Route path="/organisateur/point-de-vente" element={<PointDeVente />} />
         <Route path="/point-de-vente/:id" element={<PointDeVenteId />} />
         <Route path="/event/:slug" element={<SingleEevent />} />
-        <Route path="/accueil" element={<Accueil />} />
+        <Route path="/event/:slug/modified" element={<CreateEvent />} />
         <Route path="/createevent" element={<CreateEvent />} />
-        <Route path="/createbillet" element={<CreateBillet />} />
+        <Route path="/billeterie" element={<GestionBillet />} />
         <Route path="/accueiluser" element={<AccueilUser />} />
         <Route path="/tiket" element={<Ticket />} />
       </Routes>

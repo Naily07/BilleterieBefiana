@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Stack, Typography, TextField } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -25,24 +25,38 @@ const tabEvent = [
 ];
 
 const listEvent = [{ nom: "Makua tour" }, { nom: "Miss Mada" }];
-
-const ticketforms = [
+// api/event/smatchin/tickets
+const listAddTicket = [
   {
-    register: "simple",
-    defaultValue: 0, 
+    type_ticket: "simple",
+    nb_ticket: 0,
+    event: {
+      id: 1,
+      nom: "Smatchin",
+    },
+    pk: 9,
   },
+];
+const ticket = [
   {
-    register : 'gold',
-    defaultValue : 0,
+    type_ticket: "simple",
+    nb_ticket: 50,
+    event: {
+      id: 1,
+      nom: "Smatchin",
+    },
+    pk: 14,
   },
-  {
-    register : 'silver',
-    defaultValue : 0,
-  }
-]
+];
 
 export default function TicketTableau() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const [AddticketForm, setAddTicketForm] = useState([]);
   const [event, setEvent] = useState("");
   const handelChangeEvent = (event) => {
     if (event.target.value) setEvent(event.target.value);
@@ -50,6 +64,14 @@ export default function TicketTableau() {
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    setAddTicketForm(() =>
+      listAddTicket.map((item) => {
+        return { defaultValue: item.nb_ticket | 0, register: item.type_ticket };
+      })
+    );
+  }, []);
   return (
     <Box
       sx={{
@@ -89,7 +111,7 @@ export default function TicketTableau() {
             id="demo-simple-select"
             value={event}
             sx={{
-              height : "50px"
+              height: "50px",
             }}
             label="Age"
             onChange={handelChangeEvent}
@@ -103,7 +125,7 @@ export default function TicketTableau() {
             })}
           </Select>
 
-          <Typography sx={{ mt: 1.7, fontSize: "18px", mb: 1.5 }}>
+          <Typography sx={{ mt: 1.7, fontSize: "17px", mb: 1.5 }}>
             Ticket displonible de lévènement
           </Typography>
           <Box>
@@ -111,7 +133,7 @@ export default function TicketTableau() {
               <Table sx={{ minWidth: 300 }} aria-label="simple table">
                 <TableHead>
                   <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                    {tabEvent.map((type, i) => (
+                    {ticket.map((type, i) => (
                       <TableCell
                         key={i}
                         align="center"
@@ -124,7 +146,7 @@ export default function TicketTableau() {
                           },
                         }}
                       >
-                        {type.typeBille}
+                        {type.type_ticket}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -137,45 +159,41 @@ export default function TicketTableau() {
                       },
                     }}
                   >
-                    <TableCell
-                      sx={{
-                        "&.MuiTableCell-root": {
-                          padding: "10px",
-                        },
-                      }}
-                      align="center"
-                    >
-                      50
-                    </TableCell>
-                    <TableCell align="center">60</TableCell>
-                    <TableCell align="center">12</TableCell>
+                    {ticket.map((item, i) => {
+                      return (
+                        <TableCell align="center">{item.nb_ticket}</TableCell>
+                      );
+                    })}
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
           </Box>
-          <Typography sx={{ mt: 1.7, fontSize: "18px", mb: 1.5 }}>
+          <Typography sx={{ mt: 1.7, fontSize: "17px", mb: 1.5 }}>
             Ticket du point de vente
           </Typography>
           <Box>
-            <TableContainer sx={{ border: "1px solid rgba(0,0,0, 0.10)" }}>
-              <Table sx={{ minWidth: 300 }} aria-label="simple table">
+            <TableContainer
+              sx={{ width: 'auto', border: "1px solid rgba(0,0,0, 0.10)" }}
+            >
+              <Table aria-label="simple table">
                 <TableHead>
                   <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                    {tabEvent.map((typB, i) => (
+                    {AddticketForm.map((item, i) => (
                       <TableCell
                         key={i}
                         align="center"
                         sx={{
                           color: "#6E6893",
-                          fontWeight: "500",
+                          fontWeight: "medium",
+                          fontSize: "14px",
                           textTransform: "uppercase",
                           "&.MuiTableCell-root": {
                             padding: "10px",
                           },
                         }}
                       >
-                        {typB.typeBille}
+                        {item.register}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -188,7 +206,7 @@ export default function TicketTableau() {
                       },
                     }}
                   >
-                    {ticketforms.map((item, i) => (
+                    {AddticketForm.map((item, i) => (
                       <TableCell
                         key={i}
                         align="center"
@@ -201,19 +219,13 @@ export default function TicketTableau() {
                           },
                         }}
                       >
-
-                        <InputTicket register = {register} registerName={item.register} defaultValue={item.defaultValue} />
-                        
+                        <InputTicket
+                          register={register}
+                          registerName={item.register}
+                          defaultValue={item.defaultValue}
+                        />
                       </TableCell>
                     ))}
-                    
-                    {/* <TableCell align="center">
-                      <TextField
-                        type="number"
-                        size="small"
-                        sx={{ maxWidth: "100px" }}
-                      />
-                    </TableCell> */}
                   </TableRow>
                 </TableBody>
               </Table>
@@ -222,7 +234,7 @@ export default function TicketTableau() {
         </Stack>
         <Box sx={{ mx: "auto", width: "90px", mt: 2.1 }}>
           <Button
-          type="submit"
+            type="submit"
             sx={{
               color: "#000",
               textTransform: "lowercase",

@@ -8,14 +8,14 @@ import Headerc from "../../components/header/Headerc";
 function Login() {
   return (
     <>
-      <Box>
-        <Headerc />
+      <Headerc />
+      <Stack height={"100svh"} sx={{direction : "column", alignItems : "center", justifyContent : "center"}}>
         <Stack
           direction="rows"
           sx={{
             mt: 5.2,
             padding: "0px 10px",
-            border: "1px solid #EEEEEE",
+            border: "1px solid #EEE",
             width: "80%",
             mx: "auto",
             borderRadius: "5px",
@@ -32,26 +32,54 @@ function Login() {
           ></Box>
 
           <Box sx={{ width: "700px", height: "500px", padding: "50px 20px" }}>
-            <Typography
+            <Box
               sx={{
-                textAlign: "center",
-                fontSize: "26px",
-                fontWeight: "600",
-                color: "#2A2A2A",
-                lineHeight: "33px",
-                mb: 1.7,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              Completez votre profile
-              <br />
-              organisateur
-            </Typography>
-            <Typography
-              sx={{ textAlign: "center", fontSize: "12px", color: "#3A3A3A" }}
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  fontSize: "23px",
+                  fontWeight: "600",
+                  color: "#2A2A2A",
+                  lineHeight: "33px",
+                  ":after": {
+                    content: "''",
+                    display: "block",
+                    width: "25px",
+                    height: "3px",
+                    bgcolor: "grey",
+                    margin: "5px auto",
+                  },
+                }}
+              >
+                Completez votre profile
+                <br />
+                organisateur
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                width: "100%",
+                mt: 1,
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
-              Déja un compte organisateur ?<Link> Connexion</Link>
-            </Typography>
-            <Box fullWidth sx={{ padding: "40px 100px" }}>
+              <Typography
+                sx={{ fontSize: "12px", color: "#3A3A3A", textAlign: "center" }}
+              >
+                Déja un compte organisateur ?
+                <Link sx={{ color: "blue" }}> Connexion po</Link>
+              </Typography>
+            </Box>
+
+            <Box fullWidth sx={{ padding: "37px 100px" }}>
               <Typography sx={{ fontSize: "12px", mb: "5px" }}>
                 Nom d utilisateur <space>*</space>
               </Typography>
@@ -109,7 +137,7 @@ function Login() {
             </Box>
           </Box>
         </Stack>
-      </Box>
+      </Stack>
     </>
   );
 }

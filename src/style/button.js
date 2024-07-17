@@ -1,27 +1,17 @@
 // buttonStyles.js
 const buttonStyles = {
     MuiButtonBase: {
-      styleOverrides: {
-        root: ({ ownerState }) => ({
-            ...(ownerState.variant === 'contained' && {
-                backgroundColor: 'secondary', // Exemple de changement de couleur de fond
-                color: '#fAA', // Exemple de changement de couleur du texte
-                '&:hover': {
-                    backgroundColor: 'secondary', // Exemple de changement de couleur au survol
-                },
-                fontSize: '5rem', 
-              }),
-          }),
-      },
+      
     },
     MuiButton: {
         styleOverrides: {
           root: ({ ownerState }) => ({
             ...(ownerState.variant === 'contained' && {
-              backgroundColor: 'secondary.main', // Exemple de changement de couleur de fond
+              backgroundColor: '#1E0A3C', 
+              textTransform: "capitalize",
               color: '#fff',
               '&:hover': {
-                backgroundColor: 'secondary.main', // Exemple de changement de couleur au survol
+                backgroundColor: '#3D64FF', // Exemple de changement de couleur au survol
               },
             }),
             fontSize: '1rem',

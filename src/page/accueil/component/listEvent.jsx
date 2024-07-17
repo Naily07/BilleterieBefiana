@@ -56,16 +56,16 @@ export default function ListEvent() {
         >
             {eventList.map((event)=>{
                 return(
-                    <Stack justifyContent={"space-between"} minHeight={"380px"} sx={{background : `center / cover no-repeat url(${img})`}} width={"300px"}> 
-                        <Stack direction={"column"} bgcolor={"white"} width={"80px"} justifyContent={"center"} alignItems={"center"}>
-                            <Typography textTransform={"uppercase"} color={"red"}>Ven</Typography>
+                    <Stack justifyContent={"space-between"} minHeight={"368px"} width={"295px"} sx={{background : `center / cover no-repeat url(${img})`}} > 
+                        <Stack direction={"column"} bgcolor={"white"} width={"75px"} justifyContent={"center"} alignItems={"center"}>
+                            <Typography textTransform={"uppercase"} variant="h5" fontSize={"17px"} color={"red"}>Ven</Typography>
                             <Typography fontSize={"1.5rem"} >20</Typography>
-                            <Typography  > {()=>event.day} {event.date}</Typography>
+                            <Typography  >  {event.date}</Typography>
                         </Stack>
-                        <Stack bottom={0} position={"relative"} direction={"row"} bgcolor={"rgba(0, 0, 0, 0.7)"} height={"80px"} justifyContent={"space-evenly"} alignItems={"center"}> 
-                            <Stack justifyContent={"center"} alignItems={"center"} spacing={1} maxWidth={"50px"}>
-                                <Typography fontSize={"1rem"} variant="h5" color={"white"} fontWeight={"600"} textTransform={"uppercase"}>Prestige</Typography>
-                                <Typography fontSize={"1rem"} variant="h5" color={"white"}>Soirée</Typography>
+                        <Stack direction={"row"} bgcolor={"rgba(0, 0, 0, 0.7)"} height={"80px"} justifyContent={"space-evenly"} alignItems={"center"}> 
+                            <Stack justifyContent={"center"} alignItems={"center"} spacing={1} width={"60px"} >
+                                <Typography  variant="h5"  fontSize={"16px"} color={"white"} fontWeight={"medium"} textTransform={"uppercase"}>Prestige</Typography>
+                                <Typography fontSize={"1rem"} variant="h2" color={"white"}>Soirée</Typography>
                             </Stack>
                             <Button 
                                 variant="contained" size="medium" sx={{ color: "white", fontSize: "12px", 
@@ -74,12 +74,11 @@ export default function ListEvent() {
                             >
                                 Detail
                             </Button>
-                            <Typography fontSize={"1rem"} variant="h5" color={"white"} maxWidth={"50px"} textAlign={"center"} >ticket a partir de 5€</Typography>
+                            <Typography fontSize={"1rem"} variant="h5" color={"white"} width={"60px"} textAlign={"center"} >ticket a partir de 5€</Typography>
                         </Stack>
                     </Stack>
                 )
             })}
-            
         </Stack>
     )
 }

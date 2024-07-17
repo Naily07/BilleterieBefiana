@@ -69,10 +69,10 @@ const ctnListTicket = () => {
                   {vl.nbTicket}
                 </Typography>
               </Box>
-              <Box sx={{ position: "absolute", right: "13px", bottom: "15px" }}>
+              <Box sx={{ /*position: "absolute",*/ right: "13px", bottom: "15px"/*, bgcolor: "red"*/, marginTop: "30%" }}>
                 <TicketModal
                   typeTicket={vl.typeTicket}
-                  nbTicket={vl.nbTicket}
+                  nbTicket={vl.nbTicket} 
                 ></TicketModal>
               </Box>
             </Box>

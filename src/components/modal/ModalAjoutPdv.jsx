@@ -143,33 +143,31 @@ export default function AjoutPointDeVente() {
                 }}
               >
                 <Button
-                  // variant="contained"
+                  variant="contained"
                   sx={{
-                    border: "1px solid rgba(0, 0, 0, 0.10)",
+                    // border: "1px solid rgba(0, 0, 0, 0.10)",
                     bgcolor: "secondary.light",
-                    color: "#fff",
-                    // fontSize: "1rem",
-                    textTransform: "lowercase",
+                    // color: "#fff",
                     fontWeight: "600",
-                    padding: "5px 15px",
+                    // padding: "5px 15px",
                     "&:hover": { bgcolor: "secondary.main" },
-                    textTransform: "capitalize",
                   }}
                 >
                   Envoyer
                 </Button>
                 <Button
                   onClick={handleClose}
+                  variant="contained"
                   sx={{
                     border: "1px solid rgba(0, 0, 0, 0.10)",
+                    bgcolor: "customWhite.main",
                     color: "#000",
-                    textTransform: "lowercase",
                     fontSize: "1rem",
-                    fontWeight: "600",
+                    "&:hover": { bgcolor: "#EEE" },
                     padding: "6px 14px",
                   }}
                 >
-                  <span style={{ textTransform: "uppercase" }}>R</span>etour
+                  Retour
                 </Button>
               </Box>
             </Box>

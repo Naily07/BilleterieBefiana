@@ -21,7 +21,7 @@ export default function FunctionListelogo(){
         {
          funlogo.map((vlogo, ilogo)=>(
           <Box key={ilogo}>
-            <Box sx={{ width: "100px", height: "100px", backgroundImage: `url(${vlogo.logo})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}></Box>
+            <Box sx={{ width: "75px", height: "75px", backgroundImage: `url(${vlogo.logo})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}></Box>
           </Box>
          )) 
         }

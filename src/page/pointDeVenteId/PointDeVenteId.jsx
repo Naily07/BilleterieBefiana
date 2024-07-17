@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Box, Stack, Typography, Button /*Checkbox*/ } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  Button /*Checkbox*/,
+  MenuItem,
+  Select,
+  Icon,
+} from "@mui/material";
 import Headerc from "../../components/header/Headerc";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,15 +15,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-//import Paper from '@mui/material/Paper';
-import { MdClass } from "react-icons/md";
-import { FaLocationDot } from "react-icons/fa6";
-//import { SlLocationPin } from "react-icons/sl";
-import { MdAccessTimeFilled } from "react-icons/md";
-//import { SlCalender } from "react-icons/sl";
-import { BsFillCalendarDateFill } from "react-icons/bs";
 import Accordion from "@mui/material/Accordion";
-//import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -24,7 +24,15 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { PiPrinter } from "react-icons/pi";
-//import FormLabel from '@mui/material/FormLabel';
+import VenteTicket from "../../components/tickets/InputVenteTicket";
+import { MdOutlineAccessTime } from "react-icons/md";
+import { LuMapPin } from "react-icons/lu";
+import { MdOutlinePartyMode } from "react-icons/md";
+import { MdOutlineCalendarMonth } from "react-icons/md";
+import Bar from "./component/bar";
+import pattern from "../../assets/pattern.png";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import UserTopBar from "./component/usertopBar";
 
 const tabEvent = [
   {
@@ -38,563 +46,322 @@ const tabEvent = [
   },
 ];
 
-const functPrice = {
-  prixT: 5000,
-  prixT1: 7500,
-  prixT2: 10000,
-};
+const listTicket = [
+  {
+    typeTicket: "SIMPLE",
+    price: 5000,
+  },
+  {
+    typeTicket: "GOLD",
+    price: 7000,
+  },
+  {
+    typeTicket: "VIP",
+    price: 10000,
+  },
+];
 
-const functTypeTicket = {
-  typyTicket: "SIMPLE",
-  typyTicket1: "GOLD",
-  typyTicket2: "VIP",
-};
-
-function calculateTotalPrice(price1, price2, price3) {
-  return price1 + price2 + price3;
-}
+const listEvent = [{ nom: "Makua tour" }, { nom: "Miss Mada" }];
 
 function PointDeVenteId() {
-  const [prixT] = useState(5000);
-  const [prixT1] = useState(7500);
-  const [prixT2] = useState(10000);
-
-  const [compteur, setcompteur] = useState(0);
-  const [compteur1, setcompteur1] = useState(0);
-  const [compteur2, setcompteur2] = useState(0);
-  //const [total, setTotal] = useState(0);
-
-  const funincrement = () => {
-    setcompteur(compteur + 1);
-  };
-  const fundecrement = () => {
-    if (compteur > 0) {
-      setcompteur(compteur - 1);
-    }
-  };
-
-  const funincrement1 = () => {
-    setcompteur1(compteur1 + 1);
-  };
-  const fundecrement1 = () => {
-    if (compteur1 > 0) {
-      setcompteur1(compteur1 - 1);
-    }
-  };
-
-  const funincrement2 = () => {
-    setcompteur2(compteur2 + 1);
-  };
-  const fundecrement2 = () => {
-    if (compteur2) {
-      setcompteur2(compteur2 - 1);
-    }
-  };
-
-  const totalPrice = calculateTotalPrice(
-    prixT * compteur,
-    prixT1 * compteur1,
-    prixT2 * compteur2
-  );
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const [value, setValue] = useState("female");
-
+  const [selectedEvent, setSelectEvent] = useState("");
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-
+  const handelChangeEvent = (event) => {
+    console.log(event);
+    setSelectEvent(event.target.value);
+  };
   return (
     <>
       <Headerc />
-      <Box
-        sx={{
-          width: "70%",
-          mt: "3%",
-          mx: "auto",
-          border: "1px solid rgba(0, 0, 0, 0.10)",
-        }}
+      <Stack
+        zIndex={0}
+        direction={"rows"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        width={"100%"}
+        height={"92svh"}
       >
-        <Stack direction="rows" sx={{ padding: "15px 30px" }}>
-          <Box sx={{ width: "50%" }}>
-            <Box
-              fullWidth
-              sx={{
-                height: "20px",
-                display: "flex",
-                justifyContent: "flex-start",
-                mb: 3,
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "#11111",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  fontSize: "18px",
-                  "::after": {
-                    content: "''",
-                    display: "block",
-                    bgcolor: "#291F43",
-                    height: "2px",
-                    width: "62px",
-                  },
-                }}
-              >
-                Anicka Madson Yamaru
-              </Typography>
-            </Box>
-            <Typography
-              sx={{
-                mb: 1.1,
-                width: "220px",
-                color: "#1E0A3C",
-                fontWeight: "600",
-              }}
-            >
-              Selectionner un évènement
-            </Typography>
-            <select
-              style={{
-                width: "210px",
-                padding: "14px 20px",
-                borderRadius: "3px",
-                backgroundColor: "#fff",
-                border: "1px solid rgba(0,0,0,0.10)",
-              }}
-            >
-              <option value="">Makua Tour</option>
-              <option value="">Festival</option>
-              <option value="">Soirée</option>
-              <option value="">Sport</option>
-            </select>
-            <Typography
-              sx={{
-                mb: 1.1,
-                mt: 2,
-                width: "260px",
-                color: "#1E0A3C",
-                fontWeight: "600",
-              }}
-            >
-              Ticket disponible de l évèment
-            </Typography>
-            <Box>
-              <TableContainer
-                sx={{
-                  minWidth: "190px",
-                  maxWidth: "350px",
-                  border: "1px solid rgba(0,0,0, 0.10)",
-                }}
-              >
-                <Table sx={{ width: "100%" }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                      {tabEvent.map((typB, i) => (
-                        <TableCell
-                          key={i}
-                          align="center"
-                          sx={{
-                            color: "#6E6893",
-                            fontWeight: "500",
-                            textTransform: "uppercase",
-                            "&.MuiTableCell-root": { padding: "10px" },
-                          }}
-                        >
-                          {typB.typeBille}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell
-                        sx={{ "&.MuiTableCell-root": { padding: "10px" } }}
-                        align="center"
-                      >
-                        40
-                      </TableCell>
-                      <TableCell align="center">60</TableCell>
-                      <TableCell align="center">12</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-
-            {/*SECTION TICKET*/}
-
-            <Box sx={{ padding: "15px 0px" }}>
-              <Typography
-                sx={{ width: "50px", color: "#1E0A3C", fontWeight: "600" }}
-              >
-                Ticket
-              </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  width: "400px",
-                  padding: "7px 0px",
-                }}
-              >
-                {/*choixTicket()*/}
-                <Box
-                  gap={1}
-                  sx={{ display: "flex", alignItems: "center", width: "400px" }}
-                >
-                  <Box
-                    mt={2}
-                    sx={{
-                      minWidth: "300px",
-                      height: "50px",
-                      bgcolor: "#fff",
-                      border: "1px solid rgba(0, 0, 0, 0.35)",
-                      display: "flex",
-                      alignItems: "center",
-                      borderRadius: "5px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography ml={1}>{functTypeTicket.typyTicket}</Typography>
-                    <Box
-                      sx={{
-                        width: "45%",
-                        bgcolor: "#F4F2FF",
-                        height: "48px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-around",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <Box
-                        onClick={fundecrement}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          -
-                        </Typography>
-                      </Box>
-                      <Typography>{compteur}</Typography>
-                      <Box
-                        onClick={funincrement}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          +
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Typography mt={2}>{functPrice.prixT} Ar</Typography>
-                  </Box>
-                </Box>
-
-                <Box
-                  gap={1}
-                  sx={{ display: "flex", alignItems: "center", width: "400px" }}
-                >
-                  <Box
-                    mt={1}
-                    sx={{
-                      minWidth: "300px",
-                      height: "50px",
-                      bgcolor: "#fff",
-                      border: "1px solid rgba(0, 0, 0, 0.35)",
-                      display: "flex",
-                      alignItems: "center",
-                      borderRadius: "5px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography ml={1}>
-                      {functTypeTicket.typyTicket1}
-                    </Typography>
-                    <Box
-                      sx={{
-                        width: "45%",
-                        bgcolor: "#F4F2FF",
-                        height: "48px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-around",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <Box
-                        onClick={fundecrement1}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          -
-                        </Typography>
-                      </Box>
-                      <Typography>{compteur1}</Typography>
-                      <Box
-                        onClick={funincrement1}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          +
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Typography mt={2}>{functPrice.prixT1} Ar</Typography>
-                  </Box>
-                </Box>
-                <Box
-                  gap={1}
-                  sx={{ display: "flex", alignItems: "center", width: "400px" }}
-                >
-                  <Box
-                    mt={1}
-                    sx={{
-                      minWidth: "300px",
-                      height: "50px",
-                      bgcolor: "#fff",
-                      border: "1px solid rgba(0, 0, 0, 0.35)",
-                      display: "flex",
-                      alignItems: "center",
-                      borderRadius: "5px",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography ml={1}>
-                      {functTypeTicket.typyTicket2}
-                    </Typography>
-                    <Box
-                      sx={{
-                        width: "45%",
-                        bgcolor: "#F4F2FF",
-                        height: "48px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-around",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      <Box
-                        onClick={fundecrement2}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          -
-                        </Typography>
-                      </Box>
-                      <Typography>{compteur2}</Typography>
-                      <Box
-                        onClick={funincrement2}
-                        sx={{
-                          width: "30px",
-                          height: "30px",
-                          bgcolor: "#000",
-                          borderRadius: "50px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Typography sx={{ color: "#fff", fontSize: "30px" }}>
-                          +
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Typography mt={2}>{functPrice.prixT2} Ar</Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-
-          <Box
+        <Stack
+          direction={"row"}
+          width={"auto"}
+          height={"auto"}
+          gap={2}
+          bgcolor={"#fff"}
+          zIndex={1}
+        >
+          {/* <Bar /> */}
+          <Stack
             sx={{
-              width: "50%",
-              height: "470px",
-              position: "relative",
-              padding: "0px 70px",
+              // width: "60%",
+              minWidth: "900px",
+              gap: 3,
+              mx: "auto",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.10)",
+              padding: "40px",
+              borderRadius: "20px",
             }}
           >
-            <Typography
-              sx={{
-                mt: 3,
-                width: "200px",
-                color: "#1E0A3C",
-                fontWeight: "600",
-              }}
-            >
-              Détail de l évènement{" "}
-            </Typography>
-            <Box
-              gap={2}
-              sx={{
-                padding: "20px 0px",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box gap={1} sx={{ display: "flex" }}>
-                <MdClass size={20} />
-                <Typography sx={{ fontSize: "14px" }}>
-                  Prestige : SOIREE
+            <UserTopBar /> 
+            {/* Left   */}
+            <Stack direction="rows" gap={5}>
+              <Stack sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    mb: 1.1,
+                    width: "220px",
+                    color: "#1E0A3C",
+                    fontWeight: "600",
+                  }}
+                >
+                  Selectionner un évènement
                 </Typography>
-              </Box>
-              <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
-                <FaLocationDot size={20} />
-                <Typography sx={{ fontSize: "14px" }}>
-                  Localisation : Andavamamba
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedEvent}
+                  sx={{
+                    width: "350px",
+                    height: "45px",
+                  }}
+                  label="Age"
+                  onChange={handelChangeEvent}
+                >
+                  {listEvent.map((item) => {
+                    return (
+                      <MenuItem value={item.nom} key={item}>
+                        {item.nom}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <Typography
+                  sx={{
+                    mb: 1.1,
+                    mt: 2,
+                    width: "260px",
+                    color: "#1E0A3C",
+                    fontWeight: "600",
+                  }}
+                >
+                  Ticket disponible de l'évènement
                 </Typography>
-              </Box>
-              <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
-                <MdAccessTimeFilled />
-                <Typography sx={{ fontSize: "14px" }}>
-                  Date : 10/06/2024
-                </Typography>
-              </Box>
-              <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
-                <BsFillCalendarDateFill size={20} />
-                <Typography sx={{ fontSize: "14px" }}>
-                  Horaire : 08:30 jusq à 22:00
-                </Typography>
-              </Box>
-            </Box>
-            <Box>
-              <Typography
-                sx={{ width: "190px", color: "#1E0A3C", fontWeight: "600" }}
-              >
-                Mode de payement
-              </Typography>
-              <Box
-                gap={1}
-                sx={{
-                  padding: "20px 0px",
-                  width: "400px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <Box sx={{ width: "200px" }}>
-                  <Accordion sx={{ zIndex: 1 }}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1-content"
-                      id="panel1-header"
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <span style={{ fontSize: "18px" }}>{totalPrice}</span>{" "}
-                        <Typography ml={1} style={{ fontSize: "18px" }}>
-                          Ar
-                        </Typography>
-                      </Box>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <FormControl>
-                        <RadioGroup
-                          aria-labelledby="demo-controlled-radio-buttons-group"
-                          name="controlled-radio-buttons-group"
-                          value={value}
-                          onChange={handleChange}
+                <Box>
+                  <TableContainer
+                    sx={{
+                      minWidth: "190px",
+                      maxWidth: "350px",
+                      border: "1px solid rgba(0,0,0, 0.10)",
+                    }}
+                  >
+                    <Table sx={{ width: "100%" }} aria-label="simple table">
+                      <TableHead>
+                        <TableRow sx={{ bgcolor: "#F4F2FF" }}>
+                          {tabEvent.map((typB, i) => (
+                            <TableCell
+                              key={i}
+                              align="center"
+                              sx={{
+                                color: "#6E6893",
+                                fontWeight: "500",
+                                textTransform: "uppercase",
+                                "&.MuiTableCell-root": { padding: "10px" },
+                              }}
+                            >
+                              {typB.typeBille}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
                         >
-                          <FormControlLabel
-                            value="female"
-                            control={<Radio />}
-                            label="Mobile Money"
-                          />
-                          <FormControlLabel
-                            value="male"
-                            control={<Radio />}
-                            label="Espèce"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </AccordionDetails>
-                  </Accordion>
+                          {["40", "50", "60"].map((item, i) => {
+                            return (
+                              <TableCell
+                                sx={{
+                                  "&.MuiTableCell-root": { padding: "10px" },
+                                }}
+                                align="center"
+                              >
+                                {item}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Box>
-              </Box>
-            </Box>
-            <Box
-              fullWidth
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                zIndex: 0,
-                bgcolor: "yellow",
-              }}
-            >
-              <Button
+
+                {/*SECTION right*/}
+
+                <Box sx={{ padding: "15px 0px" }}>
+                  <Typography
+                    sx={{ width: "50px", color: "#1E0A3C", fontWeight: "600" }}
+                  >
+                    Ticket
+                  </Typography>
+                  {listTicket.map((v, i) => (
+                    <VenteTicket
+                      setTotalPrice={setTotalPrice}
+                      key={i}
+                      price={v.price}
+                      typeTicket={v.typeTicket}
+                    />
+                  ))}
+                </Box>
+              </Stack>
+
+              <Stack
                 sx={{
-                  width: "200px",
-                  height: "50px",
-                  border: "1px solid rgba(0,0,0,0.35)",
-                  textTransform: "Lowercase",
-                  bgcolor: "#1E0A3C",
-                  color: "#fff",
-                  padding: "5px 20px",
-                  "&:hover": { bgcolor: "#1E0A3C" },
-                  textTransform: "capitalize",
+                  width: "50%",
+                  // justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <PiPrinter color="#fff" size={20} />
-                
-                imprimer les Tickets
-              </Button>
-            </Box>
-          </Box>
+                <Typography
+                  sx={{
+                    width: "200px",
+                    color: "#1E0A3C",
+                    fontWeight: "600",
+                  }}
+                >
+                  Détail de l'évènement
+                </Typography>
+                <Box
+                  gap={2}
+                  sx={{
+                    padding: "20px 0px",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box gap={1} sx={{ display: "flex" }}>
+                    <MdOutlinePartyMode size={20} />
+                    <Typography sx={{ fontSize: "14px" }}>
+                      Prestige : SOIREE
+                    </Typography>
+                  </Box>
+                  <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
+                    <LuMapPin size={20} />
+                    <Typography sx={{ fontSize: "14px" }}>
+                      Lieu : Andavamamba
+                    </Typography>
+                  </Box>
+                  <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
+                    <MdOutlineCalendarMonth size={20} />
+                    <Typography sx={{ fontSize: "16px" }}>
+                      Date : 10/06/2024
+                    </Typography>
+                  </Box>
+                  <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
+                    <MdOutlineAccessTime size={20} />
+                    <Typography sx={{ fontSize: "14px" }}>
+                      Horaire : 08:30 jusque 22:00
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box mt={5}>
+                  <Typography
+                    variant="p"
+                    sx={{
+                      width: "190px",
+                      color: "#1E0A3C",
+                      fontWeight: "700",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Mode de payement
+                  </Typography>
+                  <Box
+                    gap={1}
+                    sx={{
+                      padding: "20px 0px",
+                      // width: "400px",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box sx={{ width: "200px" }}>
+                      <Accordion sx={{ zIndex: 1 }}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1-content"
+                          id="panel1-header"
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ fontSize: "18px" }}>
+                              {totalPrice}
+                            </span>
+                            <Typography ml={1} style={{ fontSize: "18px" }}>
+                              Ar
+                            </Typography>
+                          </Box>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <FormControl>
+                            <RadioGroup
+                              aria-labelledby="demo-controlled-radio-buttons-group"
+                              name="controlled-radio-buttons-group"
+                              value={value}
+                              onChange={handleChange}
+                            >
+                              <FormControlLabel
+                                value="female"
+                                control={<Radio />}
+                                label="Mobile Money"
+                              />
+                              <FormControlLabel
+                                value="male"
+                                control={<Radio />}
+                                label="Espèce"
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Box>
+                  </Box>
+                </Box>
+                <Button
+                  sx={{
+                    border: "1px solid rgba(0,0,0,0.35)",
+                    bgcolor: "#1E0A3C",
+                    color: "#fff",
+                    padding: "5px 20px",
+                    "&:hover": { bgcolor: "#1E0A3C" },
+                    textTransform: "capitalize",
+                    // position: "absolute",
+                  }}
+                  startIcon={<PiPrinter color="#fff" size={20} />}
+                >
+                  {/* <PiPrinter color="#fff" size={20} /> */}
+                  imprimer les Tickets
+                </Button>
+              </Stack>
+            </Stack>
+          </Stack>
         </Stack>
-      </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: -1,
+            bottom: "0px",
+            left: "15%",
+            width: "25%",
+            height: "250px",
+            backgroundImage: "url(" + pattern + ")",
+          }}
+        ></Box>
+      </Stack>
     </>
   );
 }

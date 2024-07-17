@@ -34,12 +34,11 @@ function TicketModal({ typeTicket, nbTicket }) {
     handleClose()
   }
 
-
   const listTicketQr = ()=> {
     const boxes = []
     for (let i = 0; i < nbTicket ; i++ ){
       boxes.push(
-        <Box key={i} onClick={handleClickMod} sx={{ width: "150px", height: "100px", bgcolor: "grey", mx: "auto", mt:1, backgroundImage: `url(${saryGq})`, backgroundSize: "cover", cursor: "pointer", backgroundPosition: "center" }}>
+        <Box key={i} onClick={handleClickMod} sx={{ width: "100px", height: "100px", bgcolor: "grey", mx: "auto", mt:1, backgroundImage: `url(${saryGq})`, backgroundSize: "cover", cursor: "pointer", backgroundPosition: "center" }}>
         </Box>      
       )
     }
@@ -49,7 +48,7 @@ function TicketModal({ typeTicket, nbTicket }) {
   return (
     <>
       <Box>
-        <Button onClick={handleOpen} sx={{ border: "1px solid #291F43", color: "green" }}>Télécharger un ticket<MdFileDownload size={20}/></Button>
+        <Button onClick={handleOpen} sx={{ border: "1px solid #291F43", color: "green", fontSize: "12px" }}>Télécharger un ticket<MdFileDownload size={20}/></Button>
         <Modal
           open={open}
           onClose={handleClose}
