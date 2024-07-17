@@ -24,16 +24,20 @@ function CircularIndeterminate() {
 function Accueil() {
   const [useSearch] = useSearchParams();
   const [isRegistered, setIsRegistered] = useState(false);
-  useEffect(()=>{
-    console.log("Code",useSearch.get("code"))
-    RegisterUser(useSearch.get("code")).then((res)=>{
-      console.log(res)
-      setIsRegistered(true)
-    })
-  }, [])
-  if(!isRegistered){
-    return  <CircularIndeterminate/>
-  }
+  // useEffect(()=>{
+  //   console.log("Code",useSearch.get("code"))
+  //   RegisterUser(useSearch.get("code")).then((res)=>{
+  //     console.log(res)
+  //     setIsRegistered(true)
+  //   })
+  // }, [])
+  // if(!isRegistered){
+  //   return  (
+  //     <Stack justifyContent={"center"} alignItems={"center"} height={"100vh"}>  
+  //       <CircularIndeterminate/>
+  //     </Stack>
+  //   )
+  // }
   return (
     <>
       <HeaderAccueil />

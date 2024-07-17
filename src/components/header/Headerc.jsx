@@ -4,7 +4,7 @@ function Headerc() {
   return (
     <AppBar sx={{ backgroundColor: "#fff" }}>
       <Toolbar>
-        <Box height={"8svh"} zIndex={9} bgcolor={"white"} position={"relative"}>
+        <Box  zIndex={9} bgcolor={"white"} position={"relative"}>
           <Box
             fullWidth
             sx={{

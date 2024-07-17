@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Stack, Typography, TextField } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Headerc from "../../components/header/Headerc";
@@ -30,33 +30,30 @@ const style = {
   borderRadius: "5px",
 };
 
-const infoPoint = [
+const PointDeVenteData = [
   {
-    check: "",
-    nom: "Nary",
-    email: "narisoa@gmail.com",
-    date: "05/06/2024",
-    status: "",
-    lieu: "Ivandry",
-    action: "",
-  },
-  {
-    check: "",
-    nom: "Nome",
-    email: "opsoa@gmail.com",
-    date: "08/06/2024",
-    status: "",
-    lieu: "Itaosy",
-    action: "",
-  },
-  {
-    check: "",
+    pk: 1,
     nom: "Koty",
     email: "rteea@gmail.com",
     date: "12/06/2024",
     status: "",
     lieu: "Akory",
-    action: "",
+  },
+  {
+    pk: 2,
+    nom: "Alex",
+    email: "alex@example.com",
+    date: "14/07/2024",
+    status: "",
+    lieu: "Antananarivo",
+  },
+  {
+    pk: 3,
+    nom: "Mila",
+    email: "mila@example.com",
+    date: "20/08/2024",
+    status: "",
+    lieu: "Toamasina",
   },
 ];
 const tableHeadContent = ["name", "status", "lieu", "action"];
@@ -65,19 +62,32 @@ function PointDeVente() {
   const [openSup, setOpenSup] = useState(false);
   //Function de point de vente Tsy mandeha
   const [indexToDelete, setIndexToDelete] = useState(null);
-  const [pointDeVent, setpointDeVent] = useState(infoPoint);
+  const [pointDeVent, setPointDeVent] = useState([]);
+
+  useEffect(() => {
+    setPointDeVent(
+      PointDeVenteData.map((item) => ({ ...item, checked: false }))
+    );
+  }, []);
+  console.log(pointDeVent);
   const supprimerPointDeVent = (index) => {
     //alert("Ecoute")
     const nouveauPointDeVente = [...pointDeVent];
     nouveauPointDeVente.splice(index, 1);
-    setpointDeVent(nouveauPointDeVente);
+    setPointDeVent(nouveauPointDeVente);
   };
 
   const handleCloseSuppre = (index) => {
     setIndexToDelete(index);
     setOpenSup(false);
   };
-
+  const handleChecket = (pk) => {
+    setPointDeVent((pdv) =>
+      pdv.map((item) =>
+        item.pk === pk ? { ...item, checked: !item.checked } : item
+      )
+    );
+  };
   //Validation desupression d'un poinot de vente
   const [unpoint, setUnpoint] = useState("");
   const handleOpenSuppre = (nom) => {
@@ -88,145 +98,157 @@ function PointDeVente() {
   return (
     <>
       <Headerc />
-      <Box
-        sx={{
-          height: "0px",
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          padding: "40px 40px",
-        }}
-      >
-        <AjoutPointDeVente />
-      </Box>
-      <Stack
-        fullWidth
-        direction="rows"
-        sx={{
-          padding: "0px 40px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-        gap={5}
-      >
+      <Stack mt={"8vh"} height={"92svh"}>
         <Box
           sx={{
-            minWidth: "60%",
-            border: "1px solid rgba(0,0,0, 0.10)",
-            flexGrow: "1",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: "40px 40px",
           }}
         >
-          <TableContainer sx={{ border: "1px solid rgba(0,0,0, 0.10)" }}>
-            <Table sx={{ minWidth: 600 }} aria-label="simple table">
-              <TableHead>
-                <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                  <TableCell
-                    sx={{
-                      "&.MuiTableCell-root": {
-                        padding: "0px 0px 0px 16px",
-                      },
-                    }}
-                  >
-                    <Checkbox />
-                  </TableCell>
-                  {tableHeadContent.map((item) => {
-                    return (
-                      <TableCell
-                        key={item}
-                        align="left"
-                        sx={{
-                          color: "#6E6893",
-                          fontWeight: "500",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {item}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {pointDeVent.map((row) => (
+          <AjoutPointDeVente />
+        </Box>
+        <Stack
+          fullWidth
+          direction="rows"
+          sx={{
+            padding: "0px 40px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+          gap={5}
+        >
+          <Box
+            sx={{
+              minWidth: "60%",
+              border: "1px solid rgba(0,0,0, 0.10)",
+              flexGrow: "1",
+            }}
+          >
+            <TableContainer sx={{ border: "1px solid rgba(0,0,0, 0.10)" }}>
+              <Table sx={{ minWidth: 600 }} aria-label="simple table">
+                <TableHead>
                   <TableRow
-                    key={row.check}
                     sx={{
-                      "&:last-child td, &:last-child th": {
-                        border: 0,
-                      },
+                      bgcolor: "#F4F2FF",
                     }}
                   >
-                    <TableCell component="th" scope="row">
-                      <Checkbox />
-                    </TableCell>
-                    <TableCell align="left">
-                      {row.nom}
-                      <Typography sx={{ color: "#6E6893" }}>
-                        {row.email}
-                      </Typography>
-                    </TableCell>
-                    <TableCell
-                      align="left"
+                    {/* <TableCell
                       sx={{
-                        "&.MuiTableCell-root": { padding: "0px" },
+                        "&.MuiTableCell-root": {
+                          padding: "0px 0px 0px 16px",
+                        },
                       }}
                     >
-                      <Box
-                        sx={{
-                          width: "75px",
-                          display: "flex",
-                          bgcolor: "#E6E6F2",
-                          alignItems: "center",
-                          padding: "0px 4px",
-                          borderRadius: "50px",
+                      <Checkbox />
+                    </TableCell> */}
+                    {tableHeadContent.map((item) => {
+                      return (
+                        <TableCell
+                          key={item}
+                          align="left"
+                          sx={{
+                            color: "#6E6893",
+                            fontWeight: "500",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {item}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {pointDeVent.map((row) => (
+                    <TableRow
+                      key={row.check}
+                      sx={{
+                        "&:last-child td, &:last-child th": {
+                          border: 0,
+                        },
+                        "&:hover": {
                           cursor: "pointer",
+                        },
+                        bgcolor: row.checked ? "#E6E6F2" : "white",
+                      }}
+                    >
+                      {/* <TableCell component="th" scope="row">
+                        <Checkbox
+                          onChange={(e) => handleChecket(row.pk)}
+                          color="primary"
+                          size="small"
+                        />
+                      </TableCell> */}
+                      <TableCell align="left">
+                        {row.nom}
+                        <Typography sx={{ color: "#6E6893" }}>
+                          {row.email}
+                        </Typography>
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          "&.MuiTableCell-root": { padding: "0px" },
                         }}
                       >
                         <Box
                           sx={{
-                            width: "10px",
-                            height: "10px",
-                            bgcolor: "green",
+                            width: "75px",
+                            display: "flex",
+                            bgcolor: "#E6E6F2",
+                            alignItems: "center",
+                            padding: "0px 4px",
                             borderRadius: "50px",
-                          }}
-                        ></Box>
-                        <Typography
-                          sx={{
-                            ml: 1,
-                            color: "#1E0A3C",
-                            fontSize: "14px",
+                            cursor: "pointer",
                           }}
                         >
-                          Active
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography mt={1} sx={{ fontSize: "14px" }}>
-                          Last login : {row.date}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">{row.lieu}</TableCell>
-                    <TableCell align="center">
-                      <MdDelete
-                        onClick={() => handleOpenSuppre(row.nom)}
-                        color="red"
-                        size="1.5rem"
-                        cursor="pointer"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+                          <Box
+                            sx={{
+                              width: "10px",
+                              height: "10px",
+                              bgcolor: "green",
+                              borderRadius: "50px",
+                            }}
+                          ></Box>
+                          <Typography
+                            sx={{
+                              ml: 1,
+                              color: "#1E0A3C",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Active
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Typography mt={1} sx={{ fontSize: "14px" }}>
+                            Last login : {row.date}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">{row.lieu}</TableCell>
+                      <TableCell align="center">
+                        <MdDelete
+                          onClick={() => handleOpenSuppre(row.nom)}
+                          color="red"
+                          size="1.5rem"
+                          cursor="pointer"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
 
-        <TicketTableau />
+          <TicketTableau />
+        </Stack>
       </Stack>
 
       {/*Modal supprssion*/}
-
       <Modal
         open={openSup}
         onClose={handleCloseSuppre}

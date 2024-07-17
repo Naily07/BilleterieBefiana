@@ -54,9 +54,9 @@ export default function ListEvent() {
             sx={{ height: "100%" }}
             py={10}
         >
-            {eventList.map((event)=>{
+            {eventList.map((event, i)=>{
                 return(
-                    <Stack justifyContent={"space-between"} minHeight={"368px"} width={"295px"} sx={{background : `center / cover no-repeat url(${img})`}} > 
+                    <Stack key={i} justifyContent={"space-between"} minHeight={"368px"} width={"295px"} sx={{background : `center / cover no-repeat url(${img})`}} > 
                         <Stack direction={"column"} bgcolor={"white"} width={"75px"} justifyContent={"center"} alignItems={"center"}>
                             <Typography textTransform={"uppercase"} variant="h5" fontSize={"17px"} color={"red"}>Ven</Typography>
                             <Typography fontSize={"1.5rem"} >20</Typography>
@@ -72,7 +72,7 @@ export default function ListEvent() {
                                 ml: 2, backgroundColor : (theme) => theme.palette.secondary.main}}
                                 href={"/event/"+event.slug}
                             >
-                                Detail
+                                Publier
                             </Button>
                             <Typography fontSize={"1rem"} variant="h5" color={"white"} width={"60px"} textAlign={"center"} >ticket a partir de 5€</Typography>
                         </Stack>
