@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles"
+import { useNavigate } from "react-router-dom";
 /*
 const sousmenu = {
   color: "#fff",
@@ -11,6 +12,7 @@ const sousmenu = {
 }
 */
 export default function Navbar() {
+  const navigate = useNavigate()
   const theme = useTheme();
   console.log("NAVV");
   return (
@@ -54,7 +56,8 @@ export default function Navbar() {
             sx={{ display: "flex", justifyContent: "space-between" }}
             >
             <Button
-              href="/organisateur/point-de-vente"
+              to="/organisateur/point-de-vente"
+              onClick={()=>navigate("/organisateur/point-de-vente")}
               variant="outlined"
               color="customWhite"
               sx={{ borderRadius: "10px", padding: "10px 20px" }}

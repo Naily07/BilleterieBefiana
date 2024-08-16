@@ -103,7 +103,7 @@ function CreateAcount() {
             </Box> */}
             <Button
               startIcon={<FcGoogle />}
-              variant="contained"
+              variant="outlined"
               sx={{
                 alignSelf: "center",
                 bgcolor: "#fff",

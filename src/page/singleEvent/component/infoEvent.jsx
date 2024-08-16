@@ -3,9 +3,9 @@ import { FaLocationDot } from "react-icons/fa6";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 import { MdAccessTimeFilled } from "react-icons/md";
 
-export default function InfoEvent(){
+export default function InfoEvent({detailEvent}){
     return(
-        <Box sx={{ width: "50%" }}>
+        <Box sx={{ width: "50%"}}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography
                 sx={{
@@ -20,18 +20,18 @@ export default function InfoEvent(){
                   },
                 }}
               >
-                Préstige :
+                {detailEvent.nom}
               </Typography>
               <Typography
                 sx={{ textTransform: "uppercase", ml: 1, fontWeight: "600" }}
               >
-                Soirée
+                {detailEvent.type_event}
               </Typography>
             </Box>
             <Stack sx={{ mt: 2 }} gap={2}>
               <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
                 <FaLocationDot />
-                <Typography>Ivandry</Typography>
+                <Typography>{detailEvent.lieu}</Typography>
               </Box>
               <Box
                 mt={1}
@@ -39,12 +39,11 @@ export default function InfoEvent(){
                 sx={{ display: "flex", alignItems: "center" }}
               >
                 <BsFillCalendarDateFill />
-                <Typography>20 Jiun</Typography>
+                <Typography>{detailEvent.date}</Typography>
               </Box>
               <Box mt={1} sx={{ display: "flex", alignItems: "center" }}>
                 <MdAccessTimeFilled size={20} />
-                <Typography ml={0.5}>Heurre de début: 20h </Typography>
-                <Typography>Jusqu à: 23h </Typography>
+                <Typography ml={0.5}>Heurre de début: {detailEvent.H_debut} </Typography>
               </Box>
             </Stack>
           </Box>

@@ -1,43 +1,71 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Button, Stack, Typography, TextField } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import MenuItem from "@mui/material/MenuItem";
 import { InputLabel } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useForm } from "react-hook-form";
-import InputTicket from "./inputTicket";
-const tabEvent = [
-  {
-    typeBille: "Simple",
-  },
-  {
-    typeBille: "Silver",
-  },
-  {
-    typeBille: "Gold",
-  },
-];
+import RowTicket from "./TCellTicket";
+import HeadTicket from "./headTicketTable";
+import {
+  ListAddTicketEventOrganisateur,
+  ListTicketEvent,
+  updateBulkAddTicket,
+} from "../../../services/ticket";
+import TabCellAddTicket from "./TCellAddticket";
+import SelectEvent from "../../../components/pdv/selectEvent";
 
-const listEvent = [{ nom: "Makua tour" }, { nom: "Miss Mada" }];
-// api/event/smatchin/tickets
-const listAddTicket = [
+const events = [
   {
-    type_ticket: "simple",
-    nb_ticket: 0,
-    event: {
-      id: 1,
-      nom: "Smatchin",
-    },
-    pk: 9,
+    id: 1,
+    nom: "Smatchin",
   },
+  {
+    id: 2,
+    nom: "Concert",
+  },
+  {
+    id: 3,
+    nom: "Festival",
+  },
+  // Ajoutez plus d'événements ici
 ];
-const ticket = [
+const billets = [
+  {
+    pk: 14,
+    type_ticket: "simple",
+    nb_ticket: 50,
+    event_id: 1,
+    utilisateur_pk: 1,
+  },
+  {
+    pk: 15,
+    type_ticket: "VIP",
+    nb_ticket: 20,
+    event_id: 2,
+    utilisateur_pk: 2,
+  },
+  {
+    pk: 16,
+    type_ticket: "silver",
+    nb_ticket: 30,
+    event_id: 3,
+    utilisateur_pk: 3,
+  },
+  {
+    pk: 17,
+    type_ticket: "gold",
+    nb_ticket: 40,
+    event_id: 1,
+    utilisateur_pk: 1,
+  },
+  // Ajoutez plus de billets ici
+];
+const listAddTicket = [
   {
     type_ticket: "simple",
     nb_ticket: 50,
@@ -47,31 +75,154 @@ const ticket = [
     },
     pk: 14,
   },
+  {
+    type_ticket: "Gold",
+    nb_ticket: 50,
+    event: {
+      id: 1,
+      nom: "Smatchin",
+    },
+    pk: 14,
+  },
+  {
+    type_ticket: "Vip",
+    nb_ticket: 50,
+    event: {
+      id: 1,
+      nom: "Smatchin",
+    },
+    pk: 14,
+  },
 ];
 
-export default function TicketTableau() {
+export default function TicketTableau({ pointDeVent, listEvent }) {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
+    getValues,
     formState: { errors },
   } = useForm();
   const [AddticketForm, setAddTicketForm] = useState([]);
-  const [event, setEvent] = useState("");
-  const handelChangeEvent = (event) => {
-    if (event.target.value) setEvent(event.target.value);
-  };
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const [selectedEvent, setSelectedEvent] = useState("");
+  const [listTicket, setListTicket] = useState([]);
+  const [isUpdateBool, setUpdateBool] = useState(false);
+  const pdv = pointDeVent.filter((item) => item.checked) || [];
 
   useEffect(() => {
-    setAddTicketForm(() =>
-      listAddTicket.map((item) => {
-        return { defaultValue: item.nb_ticket | 0, register: item.type_ticket };
-      })
-    );
-  }, []);
+    const selectEvent =
+      listEvent?.filter((item) => item.nom === selectedEvent) || null;
+    console.log("Sell", pdv.pk, selectEvent[0]?.pk);
+
+    if (selectEvent.length > 0) {
+      const slug = selectEvent[0]?.slug;
+      ListTicketEvent(slug)
+        .then((res) => setListTicket(res.data))
+        .catch((err) => setListTicket([]));
+      // billets //Fetch
+      //   .map((item) => {
+      //     console.log(
+      //       item.utilisateur_pk,
+      //       pdv[0]?.pk,
+      //       item.event_id,
+      //       selectEvent[0]?.pk
+      //     );
+      //     return item.utilisateur_pk === pdv[0]?.pk &&
+      //       item.event_id === selectEvent[0]?.pk
+      //       ? item
+      //       : null;
+      //   })
+      //   .filter((item) => item !== null)
+      // );
+    } else {
+      setListTicket(() => []);
+    }
+  }, [isUpdateBool, selectedEvent]);
+
+  useEffect(() => {
+    const selectEvent =
+      listEvent?.filter((item) => item.nom === selectedEvent) || null;
+    console.log("Tsia", pdv.pk, selectEvent[0]?.pk)
+    if (pdv.length > 0 && selectEvent.length > 0) {
+      const slug = selectEvent[0]?.slug;
+      const pk = pdv[0]?.pk;
+      ListAddTicketEventOrganisateur({ pk, slug })
+        .then((res) => {
+          console.log("ADD", res.data);
+          setAddTicketForm(() =>
+            res.data.map((item) => {
+              return {
+                pk: item.pk,
+                type_ticket: item.type_ticket,
+                defaultValue: item.nb_ticket | 0,
+                register: item.type_ticket,
+              };
+            })
+          );
+        })
+        .catch((err) => setAddTicketForm([]));
+      // billets //Fetch
+      //   .map((item) => {
+      //     console.log(
+      //       item.utilisateur_pk,
+      //       pdv[0]?.pk,
+      //       item.event_id,
+      //       selectEvent[0]?.pk
+      //     );
+      //     return item.utilisateur_pk === pdv[0]?.pk &&
+      //       item.event_id === selectEvent[0]?.pk
+      //       ? item
+      //       : null;
+      //   })
+      //   .filter((item) => item !== null)
+      // );
+    } else {
+      setAddTicketForm(() => []);
+    }
+  }, [pdv[0], selectedEvent]);
+
+  const onSubmit = async (data) => {
+    const ticketToUpdate = Object.keys(data);
+    const datas = [];
+    const selectEvent =
+      listEvent?.filter((item) => item.nom === selectedEvent) || null;
+    if (pdv.length > 0 && selectEvent[0]?.slug) {
+      const slug = selectEvent[0]?.slug;
+      const pdvId = pdv[0]?.pk;
+      console.log("DATAS", datas);
+
+      AddticketForm.forEach((item) => {
+        ticketToUpdate.forEach((tName) => {
+          if (item.register === tName) {
+            datas.push({ nb_ticket: parseInt(watch(tName)), pk: item.pk });
+            console.log("Equal", item.register, data);
+          }
+        });
+      });
+      console.log("DATAS", datas);
+      updateBulkAddTicket({ datas, slug, pdvId })
+        .then((res) => {
+          console.log(res.status);
+          setUpdateBool((v) => !v);
+          // reset();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  // useEffect(() => {
+  //   const selectEvent = listEvent?.filter((item) => item.nom === selectedEvent) || null;
+  //   console.log("Sell", pdv[0]?.pk, selectEvent[0]?.pk);
+  //   const pk = pdv[0]?.pk
+  //   if (pdv.length > 0 && selectEvent.length > 0) {
+  //     const slug = selectEvent[0]?.slug;
+
+  //   }
+  // }, [pdv[0], selectedEvent]);
+
   return (
     <Box
       sx={{
@@ -106,24 +257,12 @@ export default function TicketTableau() {
           <InputLabel id="demo-simple-select-label">
             Selectionner un évèment
           </InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={event}
-            sx={{
-              height: "50px",
-            }}
-            label="Age"
-            onChange={handelChangeEvent}
-          >
-            {listEvent.map((item) => {
-              return (
-                <MenuItem value={item.nom} key={item}>
-                  {item.nom}
-                </MenuItem>
-              );
-            })}
-          </Select>
+
+          <SelectEvent
+            listEvent={listEvent}
+            selectedEvent={selectedEvent}
+            setSelectedEvent={setSelectedEvent}
+          ></SelectEvent>
 
           <Typography sx={{ mt: 1.7, fontSize: "17px", mb: 1.5 }}>
             Ticket displonible de lévènement
@@ -132,39 +271,10 @@ export default function TicketTableau() {
             <TableContainer sx={{ border: "1px solid rgba(0,0,0, 0.10)" }}>
               <Table sx={{ minWidth: 300 }} aria-label="simple table">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                    {ticket.map((type, i) => (
-                      <TableCell
-                        key={i}
-                        align="center"
-                        sx={{
-                          color: "#6E6893",
-                          fontWeight: "500",
-                          textTransform: "uppercase",
-                          "&.MuiTableCell-root": {
-                            padding: "10px",
-                          },
-                        }}
-                      >
-                        {type.type_ticket}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                  <HeadTicket listTicket={listTicket} />
                 </TableHead>
                 <TableBody>
-                  <TableRow
-                    sx={{
-                      "&:last-child td, &:last-child th": {
-                        border: 0,
-                      },
-                    }}
-                  >
-                    {ticket.map((item, i) => {
-                      return (
-                        <TableCell align="center">{item.nb_ticket}</TableCell>
-                      );
-                    })}
-                  </TableRow>
+                  <RowTicket listTicket={listTicket} />
                 </TableBody>
               </Table>
             </TableContainer>
@@ -174,29 +284,11 @@ export default function TicketTableau() {
           </Typography>
           <Box>
             <TableContainer
-              sx={{ width: 'auto', border: "1px solid rgba(0,0,0, 0.10)" }}
+              sx={{ width: "auto", border: "1px solid rgba(0,0,0, 0.10)" }}
             >
               <Table aria-label="simple table">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "#F4F2FF" }}>
-                    {AddticketForm.map((item, i) => (
-                      <TableCell
-                        key={i}
-                        align="center"
-                        sx={{
-                          color: "#6E6893",
-                          fontWeight: "medium",
-                          fontSize: "14px",
-                          textTransform: "uppercase",
-                          "&.MuiTableCell-root": {
-                            padding: "10px",
-                          },
-                        }}
-                      >
-                        {item.register}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                  <HeadTicket listTicket={AddticketForm} />
                 </TableHead>
                 <TableBody>
                   <TableRow
@@ -206,7 +298,11 @@ export default function TicketTableau() {
                       },
                     }}
                   >
-                    {AddticketForm.map((item, i) => (
+                    <TabCellAddTicket
+                      listTicket={AddticketForm}
+                      register={register}
+                    />
+                    {/* {AddticketForm.length>0 && AddticketForm?.map((item, i) => (
                       <TableCell
                         key={i}
                         align="center"
@@ -225,7 +321,7 @@ export default function TicketTableau() {
                           defaultValue={item.defaultValue}
                         />
                       </TableCell>
-                    ))}
+                    ))} */}
                   </TableRow>
                 </TableBody>
               </Table>

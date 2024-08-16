@@ -1,29 +1,43 @@
 import { Controller } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { TableCell, TextField } from "@mui/material";
 
 export default function ControlInput(props) {
-  const { name, label, type, placeholder, rules, control, defaultValue } =
-    props;
+  const {
+    name,
+    label,
+    type,
+    setValue,
+    control,
+    defaultValue,
+    disabled
+  } = props;
+  
+  // console.log("WATCH", name);
   return (
-    <Controller
-      name={name}
-      control={control}
-      rules={rules}
-      defaultValue={defaultValue}
-      render={({ field }) => {
-        return (
+    <TableCell component="th" scope="row">
+      <Controller
+        name={name}
+        control={control}
+        rules={{ min : 0}}
+        defaultValue={defaultValue}
+        render={({ field: { onChange, onBlur, value, ref } }) => (
           <TextField
-            {...field}
-            label={label}
+            id={name}
+            onChange={onChange}
+            onBlur={onBlur}
+            // label={label}
+            disabled = {disabled}
+            inputProps={{
+              min : 0
+            }}
             type={type}
+            value={value}
             size="small"
-            value={field.value}
-            onChange={field.onChange}
-            onBlur={field.onBlur}
-            placeholder={placeholder}
+            // placeholder={placeholder}
+            inputRef={ref}
           />
-        );
-      }}
-    />
+        )}
+      />
+    </TableCell>
   );
 }

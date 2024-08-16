@@ -11,6 +11,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 //import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { RegisterPDV } from "../../services/account";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -24,12 +28,20 @@ const style = {
   borderRadius: "5px",
 };
 
-const listeEvent = ["Festivale", "Soirée", "Foire", "Sport", "Conférence"];
+// const listeEvent = ["Festivale", "Soirée", "Foire", "Sport", "Conférence"];
 
-const funcListEvent = () => {
+const FuncListEvent = ({listEvent, register, setListEventSelect}) => {
+  const handleChange = (event) => {
+    if (event.target.checked) {
+      setListEventSelect((prev) => [...prev, event.target.value]);
+    } else {
+      setListEventSelect((prev) => prev.filter((v) => v !== event.target.value));
+    }
+    // register("list_event", listEventSelect);
+  }
   return (
     <>
-      {listeEvent.map((v, i) => (
+      {listEvent.length>0 && listEvent?.map((v, i) => (
         <Box
           key={i}
           sx={{
@@ -41,21 +53,32 @@ const funcListEvent = () => {
             justifyContent: "space-between",
           }}
         >
-          <Typography>{v}</Typography>
-          <Checkbox />
+          <Typography>{v?.nom}</Typography>
+          <Checkbox  value={v?.nom} onChange={handleChange} /> 
         </Box>
       ))}
     </>
   );
 };
 
-export default function AjoutPointDeVente() {
-  const [open, setOpen] = React.useState(false);
+export default function AjoutPointDeVente({listEvent}) {
+  const [open, setOpen] = useState(false);
+  const [listEventSelect, setListEventSelect] = useState([]);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const { handleSubmit, register } = useForm();
+  const onSubmit = (data) => {
+    data['list_event'] = listEventSelect;
+    console.log(data);
+    RegisterPDV(data).then((res) => {
+      if (res.status === 200 || res.status === 201) {
+        console.log(res.data);
+      }
+    });
+  };
+  console.log(listEvent);
   return (
-    <div>
+    <>
       <Box>
         <Button
           onClick={handleOpen}
@@ -67,11 +90,10 @@ export default function AjoutPointDeVente() {
             padding: "9px 30px",
             "&:hover": { bgcolor: "#1E0A3C" },
             borderRadius: "10px",
-            textTransform: "capitalize"
+            textTransform: "capitalize",
           }}
         >
-          ajouter un points
-          de vente
+          ajouter un points de vente
         </Button>
       </Box>
       <Modal
@@ -90,90 +112,105 @@ export default function AjoutPointDeVente() {
             Crée un point de vente
           </Typography>
           <Box mt={4} gap={1}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Box sx={{}}>
                 <Typography>Nom d utilisateurs</Typography>
                 <TextField fullWidth size="small" sx={{ mt: 1 }} />
                 <Typography sx={{ mt: 1.5 }}>Adress Email</Typography>
-                <TextField type="email" fullWidth size="small" sx={{ mt: 1 }} />
+                <TextField
+                  {...register("email",  {required: "email requis"})}
+                  placeholder="email"
+                  type="email"
+                  fullWidth
+                  size="small"
+                  sx={{ mt: 1 }}
+                />
                 <Typography sx={{ mt: 1.5 }}>Lieu</Typography>
-                <TextField type="email" fullWidth size="small" sx={{ mt: 1 }} />
+                <TextField
+                  type="lieu"
+                  fullWidth
+                  size="small"
+                  sx={{ mt: 1 }}
+                  {...register("lieu")}
+                />
               </Box>
-            </form>
-            <Box
-              sx={
-                {
-                  /* height: "200px" */
+              <Box
+                sx={
+                  {
+                    /* height: "200px" */
+                  }
                 }
-              }
-            >
-              <Box sx={{ mt: 2.5 }}>
-                <Accordion defaultExpanded size="small">
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                  >
-                    <Typography>Sélctionner les évènements</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Box sx={{ maxHeight: "100px", overflowY: "auto" }}>
-                      {funcListEvent()}
-                    </Box>
-                  </AccordionDetails>
-                </Accordion>
+              >
+                <Box sx={{ mt: 2.5 }}>
+                  <Accordion defaultExpanded size="small">
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1-content"
+                      id="panel1-header"
+                    >
+                      <Typography>Sélctionner les évènements</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box sx={{ maxHeight: "100px", overflowY: "auto" }}>
+                        <FuncListEvent listEvent={listEvent} register={register} setListEventSelect={setListEventSelect} />
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+                </Box>
               </Box>
-            </Box>
-            <Box
-              sx={{
-                width: "100%",
-                height: "50px",
-                mt: 2,
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
+
               <Box
                 sx={{
+                  width: "100%",
+                  height: "50px",
+                  mt: 2,
                   display: "flex",
-                  width: "180px",
-                  gap: 1,
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
                 }}
               >
-                <Button
-                  variant="contained"
+                <Box
                   sx={{
-                    // border: "1px solid rgba(0, 0, 0, 0.10)",
-                    bgcolor: "secondary.light",
-                    // color: "#fff",
-                    fontWeight: "600",
-                    // padding: "5px 15px",
-                    "&:hover": { bgcolor: "secondary.main" },
+                    display: "flex",
+                    width: "180px",
+                    gap: 1,
+                    justifyContent: "space-between",
                   }}
                 >
-                  Envoyer
-                </Button>
-                <Button
-                  onClick={handleClose}
-                  variant="contained"
-                  sx={{
-                    border: "1px solid rgba(0, 0, 0, 0.10)",
-                    bgcolor: "customWhite.main",
-                    color: "#000",
-                    fontSize: "1rem",
-                    "&:hover": { bgcolor: "#EEE" },
-                    padding: "6px 14px",
-                  }}
-                >
-                  Retour
-                </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      // border: "1px solid rgba(0, 0, 0, 0.10)",
+                      bgcolor: "secondary.light",
+                      // color: "#fff",
+                      fontWeight: "600",
+                      // padding: "5px 15px",
+                      "&:hover": { bgcolor: "secondary.main" },
+                    }}
+                  >
+                    Envoyer
+                  </Button>
+                  <Button
+                    onClick={handleClose}
+                    variant="contained"
+                    sx={{
+                      border: "1px solid rgba(0, 0, 0, 0.10)",
+                      bgcolor: "customWhite.main",
+                      color: "#000",
+                      fontSize: "1rem",
+                      "&:hover": { bgcolor: "#EEE" },
+                      padding: "6px 14px",
+                    }}
+                  >
+                    Retour
+                  </Button>
+                </Box>
               </Box>
-            </Box>
+            </form>
           </Box>
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }

@@ -15,6 +15,7 @@ import { AppBar,  Toolbar } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import useAuth from "../../services/hooks/useAuth";
 
 const Search = styled("div")(({ theme }) => ({
   display: "flex",
@@ -60,6 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function HeaderAccueil() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const {logout} = useAuth()
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,6 +69,10 @@ export default function HeaderAccueil() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = ()=>{
+    logout()
+    handleClose()
+  }
 
   return (
     <>
@@ -185,8 +191,8 @@ export default function HeaderAccueil() {
             </ListItemIcon>
             Settings
           </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <ListItemIcon>
+          <MenuItem onClick={()=>handleLogout()}>
+            <ListItemIcon >
               <Logout fontSize="small" />
             </ListItemIcon>
             Logout

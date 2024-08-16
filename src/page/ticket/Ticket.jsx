@@ -5,6 +5,7 @@ import TicketModal from "../modaltelechargeTicket/TicketModal";
 import saryA from "../../assets/event1.jpg";
 import saryB from "../../assets/image2.jpg";
 import saryC from "../../assets/event3.jpg";
+import Headerc from "../../components/header/Headerc";
 
 const listTicket = [
   {
@@ -37,6 +38,7 @@ const ctnListTicket = () => {
             borderRadius: "5px",
             border: "1px solid rgba(0,0,0,0.35)",
             "&:hover": { translate: "sc" },
+            flexGrow : 1
           }}
         >
           <Stack direction="rows" sx={{ position: "relative" }}>
@@ -87,8 +89,8 @@ function Ticket() {
   return (
     <>
       <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1 }}>
-        <Headera />
-        <HeaderbUser />
+        <Headerc />
+        {/* <HeaderbUser /> */}
       </Box>
       <Box sx={{ padding: "0px 30px", mt: 20 }}>
         <Box

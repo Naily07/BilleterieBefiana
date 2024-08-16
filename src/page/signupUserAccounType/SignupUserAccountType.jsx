@@ -2,8 +2,35 @@ import { Box, Typography, Stack, Button } from "@mui/material";
 import Headerc from "../../components/header/Headerc";
 import saryparticiper from "../../assets/saryparticipe.png";
 import saryorganiser from "../../assets/saryorganiser.png";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { UpdateRegister } from "../../services/account"
+import useAuth from "../../services/hooks/useAuth";
+import { useTokenStore } from "../../services/hooks/useTokenStore";
 
 function SignupUserAccountType() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const {loginRequest} = useAuth()
+  const {setAccessToken, setRefreshToken} = useTokenStore()
+  const {pk} = location.state || {};
+
+  const updateUser = ()=>{
+    const req = {pk : pk, account_type : 'client'}
+    UpdateRegister(req)
+      .then((res) => {
+        const req = { email: res.data.email, sub: res.data.sub };
+        loginRequest(req).then((res) => {
+          setAccessToken(res.data.access_token);
+          setRefreshToken(res.data.refresh_token);
+          navigate("/accueil");
+        }).catch((err)=>err)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  console.log('primary key', pk)
   return (
     <>
       <Headerc />
@@ -71,7 +98,7 @@ function SignupUserAccountType() {
                   mx: "auto",
                 }}
               >
-                <Typography sx={{ fontSize: "13px", color: "#6E6893" }}>
+                <Typography sx={{ fontSize: "13px", color: "#6E6893", textAlign :"center" }}>
                   Prêt à vivre des expériences uniques? Rejoignez-nous
                   maintenant pour découvrir et participer à des événements
                   passionnants!
@@ -86,8 +113,9 @@ function SignupUserAccountType() {
                     textTransform: "lowercase",
                     border: "1px solid rgba(0, 0, 0, 0.15)",
                   }}
+                  onClick={updateUser}
                 >
-                  <span style={{ textTransform: "uppercase" }}>p</span>articiper
+                  <span style={{ textTransform: "capitalize" }}>participer </span>
                 </Button>
               </Box>
             </Box>
@@ -142,6 +170,7 @@ function SignupUserAccountType() {
                     textTransform: "lowercase",
                     border: "1px solid rgba(0, 0, 0, 0.15)",
                   }}
+                  onClick={() => navigate("/signup/organisateur", {state : {pk : pk}})}
                 >
                   <span style={{ textTransform: "uppercase" }}>o</span>rganiser
                 </Button>

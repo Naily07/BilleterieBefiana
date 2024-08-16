@@ -1,57 +1,38 @@
 import { useState, useRef } from "react";
-import { Box, Typography, TextField, Button } from "@mui/material";
-//import HeaderConnect from "../../components/headerConnection/HeaderConnect"
-//import Input from '@mui/joy/Input';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+} from "@mui/material"
 import { PiNotePencilBold } from "react-icons/pi";
 import { BsCalendarEvent } from "react-icons/bs";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { MdOutlineDateRange } from "react-icons/md";
 import "./CreateEvent.css";
 import { FaRegImage } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderAccueil from "../../components/header/HeaderAccueil";
-import HideAppBar from "../../components/header/hideBar";
-// import Headerb from "../../components/header/Headerb"
+import HideAppBar from "../../components/header/hideBar"
 import Navbar from "../../components/header/navBar";
-
-//import { makeStyles } from "@material-ui/core";
-/*
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'red', // Couleur de la bordure du champ de saisie
-      },
-      '&:hover fieldset': {
-        borderColor: 'blue', // Couleur de la bordure au survol
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'green', // Couleur de la bordure quand le champ est en focus
-      },
-    },
-    '& .MuiInputBase-input': {
-      color: 'purple', // Couleur du texte saisi
-    },
-    '& .MuiFormHelperText-root': {
-      color: 'orange', // Couleur du texte d'aide
-    },
-    '& .MuiInputLabel-root': {
-      color: 'pink', // Couleur de l'étiquette
-    },
-  }
-}))
-*/
+import { Controller, useForm } from "react-hook-form";
+import { createEvent } from "../../services/eventManagement";
+import Headerc from "../../components/header/Headerc";
 
 export default function CreateEvent() {
   const [isShow, setIsShow] = useState(false);
   const [choixImage, setChoixImage] = useState([]);
   const inputref = useRef(null);
+  const navigate = useNavigate()
   const inputRefLogo = useRef(null);
   const [isShowChoix, setIsShowChoix] = useState(false);
   const [image, setImage] = useState("");
-
+  const { handleSubmit, control } = useForm();
   const selectImage = (event) => {
     //event.preventDefault();
+    // onChange();
     const files = Array.from(event.target.files);
     setChoixImage(files);
   };
@@ -68,7 +49,17 @@ export default function CreateEvent() {
     // Met à jour le tableau d'images
     setChoixImage(newChoixImage);
   };
-
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    for (let key in data) formData.append(key, data[key]);
+    if (image) formData.append("image", image);
+    for (let key in choixImage) {
+      formData.append("sponsor_image", choixImage[key]);
+    }
+    console.log("Form", formData);
+    const res = await createEvent(formData);
+    if(res.status == 200) navigate('/accueil')
+  };
   const handleImageClick = () => {
     inputref.current.click();
   };
@@ -81,7 +72,7 @@ export default function CreateEvent() {
   return (
     <>
       <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1 }}>
-        <HeaderAccueil />
+        <Headerc />
         {/* <HideAppBar>
           <Navbar />
         </HideAppBar> */}
@@ -115,9 +106,9 @@ export default function CreateEvent() {
               },
             }}
           >
-            CREE VOTRE EVENEMENT{" "}
+            CREE VOTRE EVENEMENT
           </Typography>
-          <Link to="/createbillet" style={{ textDecoration: "none" }}>
+          {/* <Link to="/createbillet" style={{ textDecoration: "none" }}>
             <Button
               sx={{
                 bgcolor: "#291F43",
@@ -129,10 +120,10 @@ export default function CreateEvent() {
             >
               Créer un billet
             </Button>
-          </Link>
+          </Link> */}
         </Box>
 
-        <form action="">
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
           <Box
             gap={3}
             sx={{
@@ -142,7 +133,7 @@ export default function CreateEvent() {
               paddingTop: "5px",
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "stretch",
+              alignItems: "flex-start",
               pb: 1,
             }}
           >
@@ -174,16 +165,26 @@ export default function CreateEvent() {
                   Nom de l évènement
                 </Typography>
               </Box>
-              <TextField
-                size="small"
-                variant="outlined"
-                fullWidth
-                sx={{
-                  "& .MuiInputBase-input": {
-                    color: "grey.grey600",
-                    fontWeight: "300",
-                  },
-                }}
+              <Controller
+                control={control}
+                name="nom"
+                // defaultValue={"nom"}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <TextField
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    size="small"
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                      "& .MuiInputBase-input": {
+                        color: "grey.grey600",
+                        fontWeight: "300",
+                      },
+                    }}
+                  />
+                )}
               />
               <Box
                 sx={{
@@ -201,28 +202,47 @@ export default function CreateEvent() {
                   Type de l évènement
                 </Typography>
               </Box>
-              <select
-                className="stySelect"
-                style={{
-                  width: "100%",
-                  padding: "12.5px",
-                  borderColor: "lightgrey",
-                  borderRadius: "5px",
-                  marginBottom: "8px",
-                  fontWeight: "normal",
-                  fontSize: "14px",
-                  paddingLeft: "10px",
-                  backgroundColor: "#fff",
-                  border: "1px solid rgba(0,0,0,0.10)",
-                }}
-              >
-                <option>Festival</option>
-                <option>Salon & Foire</option>
-                <option>Concert & Spectacle</option>
-                <option>Tourisme & Parc</option>
-                <option>Sport & Session loisirs</option>
-                <option>Soirée & Evènement Etudiant</option>
-              </select>
+              <Controller
+                control={control}
+                name={"type_event"}
+                defaultValue={"Festival"}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <Select
+                    className="stySelect"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    // size="small"
+                    style={{
+                      width: "100%",
+                      // padding: "12.5px",
+                      borderColor: "lightgrey",
+                      borderRadius: "5px",
+                      marginBottom: "8px",
+                      fontWeight: "normal",
+                      fontSize: "1em",
+                      height: "50px",
+                      // paddingLeft: "10px",
+                      backgroundColor: "#fff",
+                      border: "1px solid rgba(0,0,0,0.10)",
+                    }}
+                  >
+                    {["Festival", "Salon & Foire", "Concert"].map((item, i) => {
+                      return (
+                        <MenuItem value={item} key={item}>
+                          {item}
+                        </MenuItem>
+                      );
+                    })}
+                    {/* <option>Festival</option>
+                    <option>Salon & Foire</option>
+                    <option>Concert & Spectacle</option>
+                    <option>Tourisme & Parc</option>
+                    <option>Sport & Session loisirs</option>
+                    <option>Soirée & Evènement Etudiant</option> */}
+                  </Select>
+                )}
+              />
               <Box sx={{ mt: 1 }}>
                 <Typography
                   sx={{ fontWeight: "normal", cursor: "pointer" }}
@@ -265,7 +285,10 @@ export default function CreateEvent() {
                               <img
                                 src={URL.createObjectURL(file)}
                                 alt=""
-                                style={{ maxWidth: "50px", maxHeight: "50px" }}
+                                style={{
+                                  maxWidth: "50px",
+                                  maxHeight: "50px",
+                                }}
                                 onClick={() =>
                                   handleRemoveLogo(file.id || index)
                                 }
@@ -274,13 +297,24 @@ export default function CreateEvent() {
                           </>
                         ))}
                         <Box sx={{ ml: 1 }}>
+                          {/* <Controller
+                            name={"sponsors"}
+                            control={control}
+                            render={({
+                              field: { onChange, onBlur, value, ref },
+                            }) => ( */}
                           <input
+                            // onChange={onChange}
+                            // onBlur={onBlur}
+                            // value={value}
                             type="file"
                             multiple
                             onChange={selectImage}
                             ref={inputRefLogo}
                             style={{ display: "none" }}
                           />
+                          {/* )} */}
+                          {/* /> */}
                           <Typography
                             sx={{
                               fontWeight: "normal",
@@ -361,12 +395,23 @@ export default function CreateEvent() {
                       ) : (
                         <FaRegImage className="logo_image" />
                       )}
+                      {/* <Controller
+                        control={control}
+                        name={"image"}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => ( */}
                       <input
+                        // onChange={onChange}
+                        // onBlur={onBlur}
+                        // value={value}
                         type="file"
                         ref={inputref}
                         onChange={handleImageChange}
                         style={{ display: "none" }}
                       />
+                      {/* )} */}
+                      {/* /> */}
                     </Box>
                   </Box>
                 )}
@@ -375,7 +420,7 @@ export default function CreateEvent() {
             <Box
               sx={{
                 width: "55%",
-                height: "294px",
+                // height: "auto",
                 backgroundColor: "#fff",
                 borderRadius: "5px",
                 boxShadow: "0px 0px 4px 1px rgba(0,0,0,0.2)",
@@ -392,16 +437,26 @@ export default function CreateEvent() {
                   Localisation
                 </Typography>
               </Box>
-              <TextField
-                size="small"
-                variant="outlined"
-                fullWidth
-                sx={{
-                  "& .MuiInputBase-input": {
-                    color: "grey.grey600",
-                    fontWeight: "300",
-                  },
-                }}
+              <Controller
+                name={"lieu"}
+                control={control}
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <TextField
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    size="small"
+                    variant="outlined"
+                    // value={fieldState.value}
+                    fullWidth
+                    sx={{
+                      "& .MuiInputBase-input": {
+                        color: "grey.grey600",
+                        fontWeight: "300",
+                      },
+                    }}
+                  />
+                )}
               />
               <Box
                 gap={0.8}
@@ -425,27 +480,59 @@ export default function CreateEvent() {
                   <Typography sx={{ fontWeight: "normal" }}>
                     Date de début
                   </Typography>
-                  <TextField
-                    size="small"
-                    type="date"
-                    fullWidth
-                    sx={{
-                      fontWeight: "normal",
-                      mt: 0.5,
-                      bgcolor: "#fff",
-                      "& .MuiInputBase-input": {
-                        color: "grey.grey600",
-                        fontWeight: "300",
-                        fontSize: "16px",
-                      },
-                    }}
+                  <Controller
+                    name={"date"}
+                    control={control}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <TextField
+                        size="small"
+                        type="date"
+                        fullWidth
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        sx={{
+                          fontWeight: "normal",
+                          mt: 0.5,
+                          bgcolor: "#fff",
+                          "& .MuiInputBase-input": {
+                            color: "grey.grey600",
+                            fontWeight: "300",
+                            fontSize: "16px",
+                          },
+                        }}
+                      />
+                    )}
                   />
                 </Box>
                 <Box sx={{ backgroundColor: "F8F7FA", ml: 1, width: "33.33%" }}>
                   <Typography sx={{ fontWeight: "normal" }}>
                     Heure de début
                   </Typography>
-                  <TextField
+                  <Controller
+                    name={"H_debut"}
+                    control={control}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <TextField
+                        size="small"
+                        type="time"
+                        fullWidth
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        sx={{
+                          fontWeight: "normal",
+                          mt: 0.5,
+                          bgcolor: "#fff",
+                          "& .MuiInputBase-input": {
+                            color: "grey.grey600",
+                            fontWeight: "300",
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                  {/* <TextField
                     size="small"
                     type="time"
                     fullWidth
@@ -458,14 +545,37 @@ export default function CreateEvent() {
                         fontWeight: "300",
                       },
                     }}
-                  />
+                  /> */}
                 </Box>
                 <Box sx={{ backgroundColor: "F8F7FA", ml: 1, width: "33.33%" }}>
                   <Typography sx={{ fontWeight: "normal" }}>
                     Heure finale{" "}
                     <span style={{ color: "grey" }}>(Optionel)</span>
                   </Typography>
-                  <TextField
+                  <Controller
+                    name={"H_fin"}
+                    control={control}
+                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                      <TextField
+                        size="small"
+                        type="time"
+                        fullWidth
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        sx={{
+                          fontWeight: "normal",
+                          mt: 0.5,
+                          bgcolor: "#fff",
+                          "& .MuiInputBase-input": {
+                            color: "grey.grey600",
+                            fontWeight: "300",
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                  {/* <TextField
                     size="small"
                     type="time"
                     fullWidth
@@ -478,9 +588,12 @@ export default function CreateEvent() {
                         fontWeight: "300",
                       },
                     }}
-                  />
+                  /> */}
                 </Box>
               </Box>
+              <Button variant="outlined" type="submit" sx={{ mt: 5 }}>
+                Valider
+              </Button>
             </Box>
           </Box>
         </form>

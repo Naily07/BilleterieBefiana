@@ -15,13 +15,14 @@ const funlogo = [
   }
 ]
 
-export default function FunctionListelogo(){
+export default function FunctionListelogo({partenariat}){
+  console.log("PP", partenariat);
     return(
       <>
         {
-         funlogo.map((vlogo, ilogo)=>(
+         partenariat?.map((vlogo, ilogo)=>(
           <Box key={ilogo}>
-            <Box sx={{ width: "75px", height: "75px", backgroundImage: `url(${vlogo.logo})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}></Box>
+            <Box sx={{ width: "75px", height: "75px", backgroundImage: `url(${vlogo.image})`, backgroundRepeat: "no-repeat", backgroundSize: "cover" }}></Box>
           </Box>
          )) 
         }

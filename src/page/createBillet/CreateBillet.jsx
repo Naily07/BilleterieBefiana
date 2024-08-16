@@ -36,17 +36,7 @@ export default function CreateBillet() {
     e.preventDefault();
     const nouveauBillet = createData("", "", "", "", "");
     setBilletData([...billetData, nouveauBillet]);
-  };
-
-  /*
-  const linmit = 2
-  const supprimerBillet = (index) => {
-    if ( index > linmit ) {
-      const nouveauxBillets = [...billetData];
-      nouveauxBillets.splice(index, 1);
-      setBilletData(nouveauxBillets);
-    }
-  };*/
+  }
 
   const supprimerBillet = (index) => {
     if (billetData.length > 1) {

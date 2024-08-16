@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography, TextField } from "@mui/material";
+import {TextField } from "@mui/material";
 
 export default function InputTicket({ register, defaultValue, registerName }) {
   return (
@@ -10,14 +10,11 @@ export default function InputTicket({ register, defaultValue, registerName }) {
         padding: "5px",
       }}
       inputProps={{
-        min: 1,
-        max: 10,
+        min: 0
       }}
       {...register(registerName, {
         value: defaultValue,
-        required: "Ce champ est requis",
-        // min: { value: 1, message: "La valeur minimale est 1" },
-        max: 10,
+        required: "Ce champ est requis"
       })}
     />
   );

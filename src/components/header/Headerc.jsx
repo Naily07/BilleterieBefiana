@@ -4,14 +4,14 @@ function Headerc() {
   return (
     <AppBar sx={{ backgroundColor: "#fff" }}>
       <Toolbar>
-        <Box  zIndex={9} bgcolor={"white"} position={"relative"}>
+        <Box zIndex={9} bgcolor={"white"} position={"relative"}>
           <Box
             fullWidth
             sx={{
               bgcolor: "#fff",
               display: "flex",
               alignItems: "center",
-              padding: "10px 40px"
+              padding: "10px 40px",
             }}
           >
             <Typography

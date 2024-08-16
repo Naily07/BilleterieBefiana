@@ -1,7 +1,9 @@
 import { Box, Stack, Typography, Button /*Checkbox*/ } from "@mui/material";
 
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import useAuth from "../../../services/hooks/useAuth";
 export default function UserTopBar() {
+  const { logout } = useAuth();
   return (
     <Stack direction={"row"} justifyContent={"space-between"}>
       <Typography
@@ -23,7 +25,11 @@ export default function UserTopBar() {
       >
         Anicka Madson
       </Typography>
-      <ExitToAppIcon  fontSize= {"large"} sx={{cursor : "pointer"}} onClick={()=>alert("click")} />
+      <ExitToAppIcon
+        fontSize={"large"}
+        sx={{ cursor: "pointer" }}
+        onClick={() => logout()}
+      />
     </Stack>
   );
 }

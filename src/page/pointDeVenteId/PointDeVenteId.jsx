@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -24,15 +24,20 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { PiPrinter } from "react-icons/pi";
-import VenteTicket from "../../components/tickets/InputVenteTicket";
+import VenteTicket, {
+  StaticViewPrice,
+} from "../../components/tickets/InputVenteTicket";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { LuMapPin } from "react-icons/lu";
 import { MdOutlinePartyMode } from "react-icons/md";
-import { MdOutlineCalendarMonth } from "react-icons/md";
-import Bar from "./component/bar";
+import { MdOutlineCalendarMonth } from "react-icons/md"
 import pattern from "../../assets/pattern.png";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import UserTopBar from "./component/usertopBar";
+import SelectEvent from "../../components/pdv/selectEvent";
+import { GetLisEvent, GetOneEvent } from "../../services/eventManagement";
+import HeadTicket from "../pointDeVente/component/headTicketTable"
+import RowTicket from "../pointDeVente/component/TCellTicket";
+import { ListAddTicketEvent } from "../../services/ticket";
 
 const tabEvent = [
   {
@@ -48,16 +53,19 @@ const tabEvent = [
 
 const listTicket = [
   {
-    typeTicket: "SIMPLE",
-    price: 5000,
+    type_ticket: "SIMPLE",
+    nb_ticket: 10,
+    prix: 5000,
   },
   {
-    typeTicket: "GOLD",
-    price: 7000,
+    type_ticket: "GOLD",
+    nb_ticket: 10,
+    prix: 7000,
   },
   {
-    typeTicket: "VIP",
-    price: 10000,
+    type_ticket: "VIP",
+    nb_ticket: 10,
+    prix: 10000,
   },
 ];
 
@@ -68,19 +76,49 @@ function PointDeVenteId() {
 
   const [value, setValue] = useState("female");
   const [selectedEvent, setSelectEvent] = useState("");
+  const [listEvent, setListEvent] = useState([]);
+  const [AddTicket, setAddTicket] = useState([]);
+  const [detailEvent, setDetailEvent] = useState({});
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-  const handelChangeEvent = (event) => {
-    console.log(event);
-    setSelectEvent(event.target.value);
-  };
+
+  useEffect(() => {
+    setListEvent(() =>
+      GetLisEvent().then((res) => {
+        const items = res.data;
+        items.map((item) => {
+          return { nom: item.nom, pk: item.id };
+        });
+        setListEvent(items);
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    const selectEvent =
+      listEvent?.filter((item) => item.nom === selectedEvent) || null;
+    GetOneEvent(selectEvent[0]?.slug)
+      .then((res) => {
+        console.log("Detal", res.data);
+        setDetailEvent(res.data);
+      })
+      .catch((err) => setDetailEvent({}));
+    ListAddTicketEvent(selectEvent[0]?.slug)
+      .then((res) => {
+        console.log(res.data);
+        setAddTicket(res.data);
+      })
+      .catch((err) => setAddTicket([]));
+  }, [selectedEvent]);
+  
   return (
     <>
       <Headerc />
       <Stack
         zIndex={0}
         direction={"rows"}
+        mt={"8vh"}
         justifyContent={"center"}
         alignItems={"center"}
         width={"100%"}
@@ -106,7 +144,7 @@ function PointDeVenteId() {
               borderRadius: "20px",
             }}
           >
-            <UserTopBar /> 
+            <UserTopBar />
             {/* Left   */}
             <Stack direction="rows" gap={5}>
               <Stack sx={{ width: "50%" }}>
@@ -120,25 +158,14 @@ function PointDeVenteId() {
                 >
                   Selectionner un évènement
                 </Typography>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={selectedEvent}
-                  sx={{
-                    width: "350px",
-                    height: "45px",
-                  }}
-                  label="Age"
-                  onChange={handelChangeEvent}
-                >
-                  {listEvent.map((item) => {
-                    return (
-                      <MenuItem value={item.nom} key={item}>
-                        {item.nom}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
+
+                <SelectEvent
+                  width={"350px"}
+                  listEvent={listEvent}
+                  setSelectedEvent={setSelectEvent}
+                  selectedEvent={selectedEvent}
+                ></SelectEvent>
+
                 <Typography
                   sx={{
                     mb: 1.1,
@@ -160,7 +187,8 @@ function PointDeVenteId() {
                   >
                     <Table sx={{ width: "100%" }} aria-label="simple table">
                       <TableHead>
-                        <TableRow sx={{ bgcolor: "#F4F2FF" }}>
+                        <HeadTicket listTicket={AddTicket} />
+                        {/* <TableRow sx={{ bgcolor: "#F4F2FF" }}>
                           {tabEvent.map((typB, i) => (
                             <TableCell
                               key={i}
@@ -175,27 +203,16 @@ function PointDeVenteId() {
                               {typB.typeBille}
                             </TableCell>
                           ))}
-                        </TableRow>
+                        </TableRow> */}
                       </TableHead>
                       <TableBody>
-                        <TableRow
+                        {/* <TableRow
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
-                        >
-                          {["40", "50", "60"].map((item, i) => {
-                            return (
-                              <TableCell
-                                sx={{
-                                  "&.MuiTableCell-root": { padding: "10px" },
-                                }}
-                                align="center"
-                              >
-                                {item}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
+                        > */}
+                        <RowTicket listTicket={AddTicket} />
+                        {/* </TableRow> */}
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -209,14 +226,22 @@ function PointDeVenteId() {
                   >
                     Ticket
                   </Typography>
-                  {listTicket.map((v, i) => (
-                    <VenteTicket
-                      setTotalPrice={setTotalPrice}
-                      key={i}
-                      price={v.price}
-                      typeTicket={v.typeTicket}
-                    />
-                  ))}
+                  {AddTicket.length > 0 ? (
+                    AddTicket.map((v, i) => (
+                      <VenteTicket
+                        setTotalPrice={setTotalPrice}
+                        key={i}
+                        price={v.prix}
+                        typeTicket={v.type_ticket}
+                        nb_ticket={v.nb_ticket}
+                      />
+                    ))
+                  ) : (
+                    <>
+                      <StaticViewPrice></StaticViewPrice>
+                      <StaticViewPrice></StaticViewPrice>
+                    </>
+                  )}
                 </Box>
               </Stack>
 
@@ -247,25 +272,26 @@ function PointDeVenteId() {
                   <Box gap={1} sx={{ display: "flex" }}>
                     <MdOutlinePartyMode size={20} />
                     <Typography sx={{ fontSize: "14px" }}>
-                      Prestige : SOIREE
+                      {detailEvent.nom} : {detailEvent.type_event}
                     </Typography>
                   </Box>
                   <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
                     <LuMapPin size={20} />
                     <Typography sx={{ fontSize: "14px" }}>
-                      Lieu : Andavamamba
+                      Lieu : {detailEvent.lieu}
                     </Typography>
                   </Box>
                   <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
                     <MdOutlineCalendarMonth size={20} />
                     <Typography sx={{ fontSize: "16px" }}>
-                      Date : 10/06/2024
+                      Date : {detailEvent.date}
                     </Typography>
                   </Box>
                   <Box gap={1} sx={{ display: "flex", alignItems: "center" }}>
                     <MdOutlineAccessTime size={20} />
                     <Typography sx={{ fontSize: "14px" }}>
-                      Horaire : 08:30 jusque 22:00
+                      Horaire : {detailEvent.Hdebut} -{" "}
+                      {detailEvent.Hdfin ? "jusque " + detailEvent.Hdfin : ""}
                     </Typography>
                   </Box>
                 </Box>
